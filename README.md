@@ -26,36 +26,50 @@ with parameters derived from **NIST FIPS 186-4 (Digital Signature Standard)**.
 ## 📂 Repository Structure
 
 ```text
+## 📂 Repository Structure
+
+```text
 elliptic_curve_cryptography/
 │
 ├── gf2_163/
 │   ├── verilog/
-│   │   ├── gf2m_mult_163.v
+│   │   ├── ec_scalar_mult_163.v
+│   │   ├── gf2_reduce_163.v
 │   │   ├── gf2m_inv_163.v
-│   │   ├── point_add_163.v
-│   │   ├── point_double_163.v
-│   │   ├── scalar_mult_163.v
-│   │   └── ecdss_163.v
+│   │   ├── gf2m_mult_163.v
+│   │   ├── mult20.v
+│   │   ├── mult21.v
+│   │   ├── mult40.v
+│   │   ├── mult41.v
+│   │   ├── mult81.v
+│   │   ├── mult82.v
+│   │   ├── mult163.v
+│   │   ├── point_add_ld163.v
+│   │   ├── point_double_ld163.v
+│   │   └── squarer_163.v
+│   │
 │   ├── testbench/
-│   │   ├── tb_scalar_mult_163.v
-│   │   ├── tb_ecdss_163.v
-│   │   └── generated_by_python/
+│   │   └── tb_ec_scalar_mult_163.v
+│   │
 │   └── python/
 │       ├── scalar_mult_163.py
-│       ├── testbench_gen_163.py
+│       ├── testbench_gen_scalar_mult_163.py
+│       ├── generating_points_ecc_163.py
+│       ├── ECC_Encryption_Decryption_Module_over_GF2M_163.py
 │       └── ecdss_ref_163.py
 │
 ├── gf2_233/
-│   ├── verilog/...
-│   ├── testbench/...
-│   └── python/...
+│   ├── verilog/
+│   ├── testbench/
+│   └── python/
 │
 ├── gf2_571/
-│   ├── verilog/...
-│   ├── testbench/...
-│   └── python/...
+│   ├── verilog/
+│   ├── testbench/
+│   └── python/
 │
 └── README.md
+
 
 ```
 
@@ -105,7 +119,7 @@ This same algorithm is used across GF(2¹⁶³), GF(2²³³), and GF(2⁵⁷¹),
 
 ---
 
-### 4. Elliptic Curve Digital Signature Scheme (ECDSS)
+### 4. Elliptic Curve Digital Signature Scheme (ECDSS) Implemented CPU only:
 
 Implements both **signature generation** and **verification** in hardware and Python.
 
