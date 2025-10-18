@@ -476,10 +476,10 @@ Px, Py, Pz = map(cp.asarray, (Gx, Gy, Gz))
 a_gpu, b_gpu = map(cp.asarray, (a_curve, b_curve))
 Xout, Yout, Zout = (cp.zeros(9, dtype=cp.uint64) for _ in range(3))
 
-num_tests = 1000
+num_tests = 10
 for t in range(num_tests):
-    # k_int = random.getrandbits(M - 1) | (1 << (M - 1))
-    k_int = random.randint(3, 30)
+    k_int = random.getrandbits(M - 1) | (1 << (M - 1))
+    #  k_int = random.randint(3, 30)
 
     k_limbs = to_limbs(k_int)
     k_gpu = cp.asarray(k_limbs, dtype=cp.uint64)
