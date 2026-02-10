@@ -88,37 +88,37 @@ def itoh_tsujii_inv_571(a, poly=IRRED_POLY, m=M):
     global mult_count, sqr_count
     mult_count, sqr_count = 0, 0
 
-    print("==== Itoh–Tsujii Chain for m=571 ====")
+    print("==== Itoh-Tsujii Chain for m=571 ====")
 
     b1 = a
-    print("β1 =", hex(b1))
+    print("b1 =", hex(b1))
 
     # Step chain
-    b2   = gf2m_mult(gf2m_square(b1), b1, label="β2")
-    b4   = gf2m_mult(gf2m_square_k(b2, 2, base_label="β2"), b2, label="β4")
-    b8   = gf2m_mult(gf2m_square_k(b4, 4, base_label="β4"), b4, label="β8")
-    b16  = gf2m_mult(gf2m_square_k(b8, 8, base_label="β8"), b8, label="β16")
-    b32  = gf2m_mult(gf2m_square_k(b16, 16, base_label="β16"), b16, label="β32")
-    b64  = gf2m_mult(gf2m_square_k(b32, 32, base_label="β32"), b32, label="β64")
-    b128 = gf2m_mult(gf2m_square_k(b64, 64, base_label="β64"), b64, label="β128")
-    b256 = gf2m_mult(gf2m_square_k(b128, 128, base_label="β128"), b128, label="β256")
-    b512 = gf2m_mult(gf2m_square_k(b256, 256, base_label="β256"), b256, label="β512")
+    b2   = gf2m_mult(gf2m_square(b1), b1, label="b2")
+    b4   = gf2m_mult(gf2m_square_k(b2, 2, base_label="b2"), b2, label="b4")
+    b8   = gf2m_mult(gf2m_square_k(b4, 4, base_label="b4"), b4, label="b8")
+    b16  = gf2m_mult(gf2m_square_k(b8, 8, base_label="b8"), b8, label="b16")
+    b32  = gf2m_mult(gf2m_square_k(b16, 16, base_label="b16"), b16, label="b32")
+    b64  = gf2m_mult(gf2m_square_k(b32, 32, base_label="b32"), b32, label="b64")
+    b128 = gf2m_mult(gf2m_square_k(b64, 64, base_label="b64"), b64, label="b128")
+    b256 = gf2m_mult(gf2m_square_k(b128, 128, base_label="b128"), b128, label="b256")
+    b512 = gf2m_mult(gf2m_square_k(b256, 256, base_label="b256"), b256, label="b512")
 
     # Extend to 570
-    t = gf2m_square_k(b512, 32, base_label="β512")
-    t = gf2m_mult(t, b32, label="β544")
+    t = gf2m_square_k(b512, 32, base_label="b512")
+    t = gf2m_mult(t, b32, label="b544")
 
-    t = gf2m_square_k(t, 16, base_label="β544")
-    t = gf2m_mult(t, b16, label="β560")
+    t = gf2m_square_k(t, 16, base_label="b544")
+    t = gf2m_mult(t, b16, label="b560")
 
-    t = gf2m_square_k(t, 8, base_label="β560")
-    t = gf2m_mult(t, b8, label="β568")
+    t = gf2m_square_k(t, 8, base_label="b560")
+    t = gf2m_mult(t, b8, label="b568")
 
-    t = gf2m_square_k(t, 2, base_label="β568")
-    b570 = gf2m_mult(t, b2, label="β570")
+    t = gf2m_square_k(t, 2, base_label="b568")
+    b570 = gf2m_mult(t, b2, label="b570")
 
-    # Final square → inverse
-    inv_a = gf2m_square(b570, label="β571 (inverse)")
+    # Final square -> inverse
+    inv_a = gf2m_square(b570, label="b571 (inverse)")
 
     print("============================================")
     print(f"Multiplications = {mult_count}")

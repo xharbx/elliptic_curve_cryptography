@@ -86,23 +86,23 @@ def itoh_tsujii_inv_233(a, poly=IRRED_POLY, m=M):
     mult_count = 0
     sqr_count = 0
 
-    print("==== Itoh–Tsujii Optimal Chain for m=233 ====")
+    print("==== Itoh-Tsujii Optimal Chain for m=233 ====")
 
     # Step 1: b1 = a
     b1 = a
-    print("β1 =", hex(b1))
+    print("b1 =", hex(b1))
 
     # Build chain: 1,2,4,8,16,32,64,128,192,224,232,233
-    b2   = gf2m_mult(gf2m_square(b1), b1, label="β2")
-    b4   = gf2m_mult(gf2m_square_k(b2, 2, base_label="β2"), b2, label="β4")
-    b8   = gf2m_mult(gf2m_square_k(b4, 4, base_label="β4"), b4, label="β8")
-    b16  = gf2m_mult(gf2m_square_k(b8, 8, base_label="β8"), b8, label="β16")
-    b32  = gf2m_mult(gf2m_square_k(b16, 16, base_label="β16"), b16, label="β32")
-    b64  = gf2m_mult(gf2m_square_k(b32, 32, base_label="β32"), b32, label="β64")
-    b128 = gf2m_mult(gf2m_square_k(b64, 64, base_label="β64"), b64, label="β128")
-    b192 = gf2m_mult(gf2m_square_k(b128, 64, base_label="β128"), b64, label="β192")
-    b224 = gf2m_mult(gf2m_square_k(b192, 32, base_label="β192"), b32, label="β224")
-    b232 = gf2m_mult(gf2m_square_k(b224, 8, base_label="β224"), b8, label="β232")
+    b2   = gf2m_mult(gf2m_square(b1), b1, label="b2")
+    b4   = gf2m_mult(gf2m_square_k(b2, 2, base_label="b2"), b2, label="b4")
+    b8   = gf2m_mult(gf2m_square_k(b4, 4, base_label="b4"), b4, label="b8")
+    b16  = gf2m_mult(gf2m_square_k(b8, 8, base_label="b8"), b8, label="b16")
+    b32  = gf2m_mult(gf2m_square_k(b16, 16, base_label="b16"), b16, label="b32")
+    b64  = gf2m_mult(gf2m_square_k(b32, 32, base_label="b32"), b32, label="b64")
+    b128 = gf2m_mult(gf2m_square_k(b64, 64, base_label="b64"), b64, label="b128")
+    b192 = gf2m_mult(gf2m_square_k(b128, 64, base_label="b128"), b64, label="b192")
+    b224 = gf2m_mult(gf2m_square_k(b192, 32, base_label="b192"), b32, label="b224")
+    b232 = gf2m_mult(gf2m_square_k(b224, 8, base_label="b224"), b8, label="b232")
     inv_a = gf2m_square(b232, label="inv")
 
     print("============================================")
