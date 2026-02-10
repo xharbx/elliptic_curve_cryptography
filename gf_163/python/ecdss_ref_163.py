@@ -6,6 +6,8 @@ Lopez–Dahab projective coordinates, sect163r2 parameters.
 
 import random
 import hashlib
+import time
+import matplotlib.pyplot as plt
 from scalar_mult_163 import ecc_gf2m_163, point_add, to_affine, Gx, Gy
 from ECC_Encryption_Decryption_Module_over_GF2M_163 import generate_keys, n
 
@@ -60,18 +62,80 @@ def verify_signature(msg, S1, S2, e2):
 
 # === Demo Run ===
 if __name__ == "__main__":
+    num_runs = 100
+    times = []
+
+    print("\n" + "="*60)
+    print("Running ECDSA Signing & Verification 100 Times")
+    print("="*60)
+
+    # Generate keys once
     d, e1, e2 = generate_keys()
     msg = "ECC SIGNATURE SALAH"
 
     print("\n=== Keys ===")
     print(f"Private key d = {hex(d)}")
     print(f"Public key e2 = ({hex(e2[0])}, {hex(e2[1])})")
+    print("\n" + "="*60)
 
-    S1, S2 = sign_message(msg, d)
-    print("\n=== Signature ===")
-    print(f"S1 = {hex(S1)}")
-    print(f"S2 = {hex(S2)}")
+    # Run the signing and verification process 5 times
+    for i in range(1, num_runs + 1):
+        print(f"\n--- Run {i} ---")
 
-    valid = verify_signature(msg, S1, S2, e2)
-    print("\n=== Verification ===")
-    print("Valid signature ✅" if valid else "Invalid ❌")
+        # Start timing
+        start_time = time.time()
+
+        # Sign the message
+        S1, S2 = sign_message(msg, d)
+
+        # Verify the signature
+        valid = verify_signature(msg, S1, S2, e2)
+
+        # End timing
+        end_time = time.time()
+        elapsed = end_time - start_time
+        times.append(elapsed)
+
+        print(f"S1 = {hex(S1)}")
+        print(f"S2 = {hex(S2)}")
+        print(f"Valid signature: {'PASS' if valid else 'FAIL'}")
+        print(f"Time elapsed: {elapsed:.6f} seconds")
+
+    # Calculate statistics
+    avg_time = sum(times) / len(times)
+    min_time = min(times)
+    max_time = max(times)
+
+    print("\n" + "="*60)
+    print("=== Timing Statistics ===")
+    print(f"Average time: {avg_time:.6f} seconds")
+    print(f"Min time: {min_time:.6f} seconds")
+    print(f"Max time: {max_time:.6f} seconds")
+    print("="*60)
+
+    # Plot the results
+    plt.figure(figsize=(10, 6))
+    runs = list(range(1, num_runs + 1))
+
+    plt.plot(runs, times, marker='o', linestyle='-', linewidth=2, markersize=8, color='#2E86AB')
+    plt.axhline(y=avg_time, color='red', linestyle='--', linewidth=1.5, label=f'Average: {avg_time:.6f}s')
+
+    plt.xlabel('Run Number', fontsize=12, fontweight='bold')
+    plt.ylabel('Time Elapsed (seconds)', fontsize=12, fontweight='bold')
+    plt.title('ECDSA Signing & Verification Performance\nGF(2^163) - sect163r2', fontsize=14, fontweight='bold')
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=10)
+    plt.xticks(runs)
+
+    # Add value labels on points
+    for i, (run, t) in enumerate(zip(runs, times)):
+        plt.text(run, t, f'{t:.4f}s', ha='center', va='bottom', fontsize=9)
+
+    plt.tight_layout()
+
+    # Save the figure
+    output_file = 'ecdsa_performance.png'
+    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    print(f"\n[SUCCESS] Plot saved as: {output_file}")
+
+    # plt.show()  # Commented out to avoid blocking execution

@@ -86,49 +86,49 @@ def itoh_tsujii_inverse_chain(a, poly=IRRED_POLY, m=M):
     mult_count = 0
     sqr_count = 0
 
-    print("==== Itoh–Tsujii µ-sequence for m=163 ====")
+    print("==== Itoh-Tsujii u-sequence for m=163 ====")
 
-    # Step 1: β1 = a
+    # Step 1: b1 = a
     b1 = a
-    print("β1 =", hex(b1))
+    print("b1 =", hex(b1))
 
-    # Step 2: β2 = (β1)^2 * β1
-    t = gf2m_square(b1, label="β1^2")
-    b2 = gf2m_mult(t, b1, label="β2")
-    
-    # Step 3: β3 = (β2)^2 * β1
-    t = gf2m_square(b2, label="β2^2")
-    b3 = gf2m_mult(t, b1, label="β3")
+    # Step 2: b2 = (b1)^2 * b1
+    t = gf2m_square(b1, label="b1^2")
+    b2 = gf2m_mult(t, b1, label="b2")
 
-    # Step 4: β5 = (β3)^(2^2) * β2
-    t = gf2m_square_k(b3, 2, base_label="β3")
-    b5 = gf2m_mult(t, b2, label="β5")
+    # Step 3: b3 = (b2)^2 * b1
+    t = gf2m_square(b2, label="b2^2")
+    b3 = gf2m_mult(t, b1, label="b3")
 
-    # Step 5: β10 = (β5)^(2^5) * β5
-    t = gf2m_square_k(b5, 5, base_label="β5")
-    b10 = gf2m_mult(t, b5, label="β10")
+    # Step 4: b5 = (b3)^(2^2) * b2
+    t = gf2m_square_k(b3, 2, base_label="b3")
+    b5 = gf2m_mult(t, b2, label="b5")
 
-    # Step 6: β20 = (β10)^(2^10) * β10
-    t = gf2m_square_k(b10, 10, base_label="β10")
-    b20 = gf2m_mult(t, b10, label="β20")
+    # Step 5: b10 = (b5)^(2^5) * b5
+    t = gf2m_square_k(b5, 5, base_label="b5")
+    b10 = gf2m_mult(t, b5, label="b10")
 
-    # Step 7: β40 = (β20)^(2^20) * β20
-    t = gf2m_square_k(b20, 20, base_label="β20")
-    b40 = gf2m_mult(t, b20, label="β40")
+    # Step 6: b20 = (b10)^(2^10) * b10
+    t = gf2m_square_k(b10, 10, base_label="b10")
+    b20 = gf2m_mult(t, b10, label="b20")
 
-    # Step 8: β80 = (β40)^(2^40) * β40
-    t = gf2m_square_k(b40, 40, base_label="β40")
-    b80 = gf2m_mult(t, b40, label="β80")
+    # Step 7: b40 = (b20)^(2^20) * b20
+    t = gf2m_square_k(b20, 20, base_label="b20")
+    b40 = gf2m_mult(t, b20, label="b40")
 
-    # Step 9: β81 = (β80)^(2^1) * β1
-    t = gf2m_square(b80, label="β80^2")
-    b81 = gf2m_mult(t, b1, label="β81")
+    # Step 8: b80 = (b40)^(2^40) * b40
+    t = gf2m_square_k(b40, 40, base_label="b40")
+    b80 = gf2m_mult(t, b40, label="b80")
 
-    # Step 10: β162 = (β81)^(2^81) * β81
-    t = gf2m_square_k(b81, 81, base_label="β81")
-    b162 = gf2m_mult(t, b81, label="β162")
+    # Step 9: b81 = (b80)^(2^1) * b1
+    t = gf2m_square(b80, label="b80^2")
+    b81 = gf2m_mult(t, b1, label="b81")
 
-    # Step 11: Final inverse = (β162)^2
+    # Step 10: b162 = (b81)^(2^81) * b81
+    t = gf2m_square_k(b81, 81, base_label="b81")
+    b162 = gf2m_mult(t, b81, label="b162")
+
+    # Step 11: Final inverse = (b162)^2
     inv_a = gf2m_square(b162, label="inv")
 
     print("=========================================")
