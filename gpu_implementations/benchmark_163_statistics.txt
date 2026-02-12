@@ -1,0 +1,44 @@
+============================================================
+GPU GF(2^163) Scalar Multiplication - Benchmark Statistics
+============================================================
+Number of runs: 10
+Tests per run:  10
+Total tests:    100
+
+------------------------------------------------------------
+Per-Run Average Times (ms)
+------------------------------------------------------------
+  Run  1: 89.23 ms
+  Run  2: 83.73 ms
+  Run  3: 83.10 ms
+  Run  4: 84.45 ms
+  Run  5: 82.15 ms
+  Run  6: 82.61 ms
+  Run  7: 84.49 ms
+  Run  8: 84.25 ms
+  Run  9: 85.30 ms
+  Run 10: 84.77 ms
+
+------------------------------------------------------------
+Overall Statistics (across all individual test times)
+------------------------------------------------------------
+  Mean:               84.41 ms
+  Median:             84.22 ms
+  Std Deviation:      5.21 ms
+  Variance:           27.1244 ms^2
+  Min:                73.03 ms
+  Max:                99.63 ms
+  Range:              26.60 ms
+  25th Percentile:    81.20 ms
+  75th Percentile:    88.24 ms
+  IQR:                7.05 ms
+
+------------------------------------------------------------
+Per-Run Statistics (ms)
+------------------------------------------------------------
+  Mean of run avgs:   84.41 ms
+  Median of run avgs: 84.35 ms
+  Std Dev of run avgs:1.86 ms
+  Min run avg:        82.15 ms
+  Max run avg:        89.23 ms
+============================================================
