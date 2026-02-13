@@ -1,198 +1,23 @@
-=====================================================================
-  CPU vs GPU Performance Analysis - All Curves Summary
-  Elliptic Curve Scalar Multiplication over Binary Extension Fields
-  Lopez-Dahab Projective Coordinates
-=====================================================================
-  Author:       Salah Harb
-  GPU:          NVIDIA GeForce RTX 4060 (8 GB), CUDA 13.0
-  CPU:          Pure Python implementation
-  Runs per curve: 10
-=====================================================================
+======================================================================
+Benchmark Summary: CPU vs RTX 4060 vs Jetson Orin Nano Super
+======================================================================
 
+GF(2^163):
+  CPU Mean:                 508.06 ms
+  RTX 4060 Mean:             84.64 ms  (Speedup: 6.00x)
+  Jetson Orin Mean:         254.85 ms  (Speedup: 1.99x)
+  RTX 4060 / Jetson:    3.01x slower on Jetson
 
-=====================================================================
-  SECTION 1: CROSS-CURVE COMPARISON TABLE
-=====================================================================
+GF(2^233):
+  CPU Mean:                1507.98 ms
+  RTX 4060 Mean:            207.20 ms  (Speedup: 7.28x)
+  Jetson Orin Mean:         649.77 ms  (Speedup: 2.32x)
+  RTX 4060 / Jetson:    3.14x slower on Jetson
 
-  Curve       | CPU Mean (ms) | GPU Mean (ms) | Speedup | CPU Std Dev | GPU Std Dev
-  ------------|---------------|---------------|---------|-------------|------------
-  GF(2^163)   |       508.06  |        84.64  |  6.00x  |       9.30  |       1.51
-  GF(2^233)   |     1,507.98  |       207.20  |  7.28x  |      20.07  |       2.14
-  GF(2^571)   |    23,995.22  |       892.97  | 26.87x  |     201.26  |       6.82
+GF(2^571):
+  CPU Mean:               23995.22 ms
+  RTX 4060 Mean:            892.97 ms  (Speedup: 26.87x)
+  Jetson Orin Mean:        2750.11 ms  (Speedup: 8.73x)
+  RTX 4060 / Jetson:    3.08x slower on Jetson
 
-
-=====================================================================
-  SECTION 2: SCALING ANALYSIS
-=====================================================================
-
-  Field Size Growth       | CPU Time Growth | GPU Time Growth | Speedup Growth
-  ------------------------|-----------------|-----------------|----------------
-  163 -> 233 (1.43x bits) |   2.97x slower  |   2.45x slower  | 6.00x -> 7.28x
-  233 -> 571 (2.45x bits) |  15.91x slower  |   4.31x slower  | 7.28x -> 26.87x
-  163 -> 571 (3.50x bits) |  47.23x slower  |  10.55x slower  | 6.00x -> 26.87x
-
-  Key Observation:
-  The GPU advantage increases dramatically with field size. At GF(2^163)
-  the GPU is 6x faster, but at GF(2^571) it is nearly 27x faster. This
-  is because the GPU's parallel arithmetic handles the larger limb
-  representations (9x64-bit for 571 vs 3x64-bit for 163) far more
-  efficiently than the sequential Python CPU implementation.
-
-
-=====================================================================
-  SECTION 3: GF(2^163) - DETAILED STATISTICS
-=====================================================================
-
-  Curve:        sect163r2
-  Equation:     y^2 + xy = x^3 + x^2 + b
-  Polynomial:   x^163 + x^7 + x^6 + x^3 + 1
-  Limbs:        3 x 64-bit
-
-  Per-Run Times (ms):
-  Run        CPU (ms)     GPU (ms)    Speedup
-  ---        --------     --------    -------
-  1            500.43        85.78      5.83x
-  2            503.22        83.77      6.01x
-  3            501.86        85.52      5.87x
-  4            507.33        82.27      6.17x
-  5            502.94        87.66      5.74x
-  6            531.55        85.32      6.23x
-  7            501.77        84.58      5.93x
-  8            514.81        82.59      6.23x
-  9            501.98        84.96      5.91x
-  10           514.75        83.94      6.13x
-
-  CPU Statistics:
-    Mean:            508.06 ms
-    Median:          503.08 ms
-    Std Deviation:     9.30 ms
-    Min:             500.43 ms
-    Max:             531.55 ms
-
-  GPU Statistics:
-    Mean:             84.64 ms
-    Median:           84.77 ms
-    Std Deviation:     1.51 ms
-    Min:              82.27 ms
-    Max:              87.66 ms
-
-  Average Speedup: 6.00x
-
-
-=====================================================================
-  SECTION 4: GF(2^233) - DETAILED STATISTICS
-=====================================================================
-
-  Curve:        sect233r1
-  Equation:     y^2 + xy = x^3 + x^2 + b
-  Polynomial:   x^233 + x^74 + 1
-  Limbs:        4 x 64-bit
-
-  Per-Run Times (ms):
-  Run        CPU (ms)     GPU (ms)    Speedup
-  ---        --------     --------    -------
-  1           1506.11       206.78      7.28x
-  2           1482.20       209.27      7.08x
-  3           1475.23       207.50      7.11x
-  4           1513.14       210.22      7.20x
-  5           1523.83       207.43      7.35x
-  6           1500.59       205.52      7.30x
-  7           1518.03       206.19      7.36x
-  8           1545.08       209.36      7.38x
-  9           1523.20       207.38      7.35x
-  10          1492.36       202.36      7.37x
-
-  CPU Statistics:
-    Mean:          1,507.98 ms
-    Median:        1,509.62 ms
-    Std Deviation:    20.07 ms
-    Min:           1,475.23 ms
-    Max:           1,545.08 ms
-
-  GPU Statistics:
-    Mean:            207.20 ms
-    Median:          207.40 ms
-    Std Deviation:     2.14 ms
-    Min:             202.36 ms
-    Max:             210.22 ms
-
-  Average Speedup: 7.28x
-
-
-=====================================================================
-  SECTION 5: GF(2^571) - DETAILED STATISTICS
-=====================================================================
-
-  Curve:        sect571r1
-  Equation:     y^2 + xy = x^3 + x^2 + b
-  Polynomial:   x^571 + x^10 + x^5 + x^2 + 1
-  Limbs:        9 x 64-bit
-
-  Per-Run Times (ms):
-  Run        CPU (ms)     GPU (ms)    Speedup
-  ---        --------     --------    -------
-  1          24360.96       891.34     27.33x
-  2          24063.74       888.17     27.09x
-  3          24003.34       889.59     26.98x
-  4          23972.59       886.55     27.04x
-  5          24041.93       899.24     26.74x
-  6          24286.17       902.26     26.92x
-  7          23681.50       884.11     26.79x
-  8          23750.22       886.75     26.78x
-  9          23873.74       904.00     26.41x
-  10         23918.01       897.73     26.64x
-
-  CPU Statistics:
-    Mean:         23,995.22 ms
-    Median:       23,987.97 ms
-    Std Deviation:   201.26 ms
-    Min:          23,681.50 ms
-    Max:          24,360.96 ms
-
-  GPU Statistics:
-    Mean:            892.97 ms
-    Median:          890.46 ms
-    Std Deviation:     6.82 ms
-    Min:             884.11 ms
-    Max:             904.00 ms
-
-  Average Speedup: 26.87x
-
-
-=====================================================================
-  SECTION 6: SUMMARY AND CONCLUSIONS
-=====================================================================
-
-  1. GPU Acceleration is Significant Across All Field Sizes
-     - GF(2^163): GPU is   6.00x faster than CPU
-     - GF(2^233): GPU is   7.28x faster than CPU
-     - GF(2^571): GPU is  26.87x faster than CPU
-
-  2. GPU Advantage Scales with Field Size
-     The speedup grows from 6x to 27x as the field size increases
-     from 163 to 571 bits. This demonstrates that GPU parallelism
-     becomes increasingly beneficial for larger field arithmetic,
-     where the CPU's sequential processing becomes a bottleneck.
-
-  3. GPU Execution is More Consistent
-     The GPU standard deviations are significantly smaller relative
-     to their means compared to CPU, indicating more predictable
-     and stable performance:
-       - GF(2^163): CPU StdDev = 1.83% of mean, GPU StdDev = 1.78%
-       - GF(2^233): CPU StdDev = 1.33% of mean, GPU StdDev = 1.03%
-       - GF(2^571): CPU StdDev = 0.84% of mean, GPU StdDev = 0.76%
-
-  4. Absolute Time Savings
-     - GF(2^163): Saves     ~423 ms per scalar multiplication
-     - GF(2^233): Saves   ~1,301 ms per scalar multiplication
-     - GF(2^571): Saves  ~23,102 ms per scalar multiplication
-
-  5. Implementation Notes
-     - CPU: Pure Python with big-integer arithmetic (no C extensions)
-     - GPU: CUDA C kernels using CuPy RawModule, 64-bit limb packing
-     - Both use Lopez-Dahab projective coordinates with Itoh-Tsujii
-       inversion for the final affine conversion
-     - The GPU kernels use schoolbook multiplication with bit-level
-       modular reduction for each field size
-
-=====================================================================
+======================================================================

@@ -454,8 +454,8 @@ extern "C" __global__ void scalar_mult_163(
 # ============================================================
 # Compile and Run
 # ============================================================
-cuda_root = r"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.9"
-include_paths = [f"{cuda_root}\\include", f"{cuda_root}\\include\\crt"]
+cuda_root = "/usr/local/cuda-12.6"
+include_paths = [f"{cuda_root}/include", f"{cuda_root}/include/crt"]
 options = ('--std=c++11',) + tuple(f'-I{p}' for p in include_paths)
 mod = cp.RawModule(code=kernel_code, options=options)
 scalar_kernel = mod.get_function("scalar_mult_163")
@@ -471,11 +471,14 @@ Yout = cp.zeros(3, dtype=cp.uint64)
 Zout = cp.zeros(3, dtype=cp.uint64)
 
 import random
- 
+import matplotlib.pyplot as plt
+
 # ============================================================
 # Run multiple random scalar multiplications (GPU)
 # ============================================================
-num_tests = 10  # number of random scalars to test
+num_tests = 50
+times = []
+results_log = []
 
 for t in range(num_tests):
     # === Random scalar (163-bit, MSB=1) ===
@@ -493,20 +496,91 @@ for t in range(num_tests):
                   (Px, Py, Pz, a_gpu, b_gpu, k_gpu, Xout, Yout, Zout))
     cp.cuda.Device().synchronize()
     gpu_time = (time.perf_counter() - start) * 1000
+    times.append(gpu_time)
 
     # === Collect results ===
     Xr = (int(Xout[2].get()) << 128) | (int(Xout[1].get()) << 64) | int(Xout[0].get())
     Yr = (int(Yout[2].get()) << 128) | (int(Yout[1].get()) << 64) | int(Yout[0].get())
 
-    print("===================================================")
-    print(f"Test #{t+1}")
-    print("Random scalar k (163-bit):")
-    print(f"k_int   = 0x{k_int:041x}")
-    print(f"k_limbs = [{hex(k_limbs[2])}, {hex(k_limbs[1])}, {hex(k_limbs[0])}]")
-    print("---------------------------------------------------")
-    print(f"GPU scalar multiplication time: {gpu_time:.2f} ms")
-    print("\n=== Result (Affine Coordinates) ===")
-    print(f"x_aff = 0x{Xr:041x}")
-    print(f"y_aff = 0x{Yr:041x}")
-    print("===================================================\n")
+    results_log.append((t + 1, k_int, Xr, Yr, gpu_time))
+
+    print(f"Test #{t+1:02d} | GPU time: {gpu_time:.2f} ms | x_aff = 0x{Xr:041x}")
+
+# ============================================================
+# Statistics
+# ============================================================
+avg_time = sum(times) / len(times)
+min_time = min(times)
+max_time = max(times)
+min_idx = times.index(min_time) + 1
+max_idx = times.index(max_time) + 1
+median_time = sorted(times)[len(times) // 2]
+total_time = sum(times)
+std_dev = (sum((t - avg_time) ** 2 for t in times) / len(times)) ** 0.5
+
+print("\n" + "=" * 60)
+print("GPU Scalar Multiplication Performance - GF(2^163)")
+print("=" * 60)
+print(f"Number of runs : {num_tests}")
+print(f"Average time   : {avg_time:.2f} ms")
+print(f"Median time    : {median_time:.2f} ms")
+print(f"Min time       : {min_time:.2f} ms (run #{min_idx})")
+print(f"Max time       : {max_time:.2f} ms (run #{max_idx})")
+print(f"Std deviation  : {std_dev:.2f} ms")
+print(f"Total time     : {total_time:.2f} ms")
+print("=" * 60)
+
+# ============================================================
+# Write statistics to txt file
+# ============================================================
+stats_file = "gpu_163_performance_stats.txt"
+with open(stats_file, "w") as f:
+    f.write("=" * 70 + "\n")
+    f.write("GPU Scalar Multiplication Performance - GF(2^163) sect163r2\n")
+    f.write("Lopez-Dahab Projective Coordinates + Itoh-Tsujii Inversion\n")
+    f.write("=" * 70 + "\n\n")
+
+    f.write(f"Number of runs     : {num_tests}\n")
+    f.write(f"Average time       : {avg_time:.4f} ms\n")
+    f.write(f"Median time        : {median_time:.4f} ms\n")
+    f.write(f"Min time           : {min_time:.4f} ms (run #{min_idx})\n")
+    f.write(f"Max time           : {max_time:.4f} ms (run #{max_idx})\n")
+    f.write(f"Std deviation      : {std_dev:.4f} ms\n")
+    f.write(f"Total time         : {total_time:.4f} ms\n\n")
+
+    f.write("-" * 70 + "\n")
+    f.write(f"{'Run':<6}{'Time (ms)':<14}{'Scalar k (hex)':<45}{'x_aff (hex)'}\n")
+    f.write("-" * 70 + "\n")
+    for run, k_val, x_val, y_val, t_ms in results_log:
+        f.write(f"{run:<6}{t_ms:<14.4f}0x{k_val:041x}   0x{x_val:041x}\n")
+
+    f.write("-" * 70 + "\n")
+    f.write(f"\nAll times (ms): {[round(t, 2) for t in times]}\n")
+
+print(f"\n[SAVED] Statistics written to: {stats_file}")
+
+# ============================================================
+# Plot runs vs times
+# ============================================================
+plt.figure(figsize=(14, 6))
+runs = list(range(1, num_tests + 1))
+
+plt.plot(runs, times, marker='o', linestyle='-', linewidth=1.5, markersize=5, color='#2E86AB', label='GPU Time')
+plt.axhline(y=avg_time, color='red', linestyle='--', linewidth=1.5, label=f'Average: {avg_time:.2f} ms')
+plt.axhline(y=min_time, color='green', linestyle=':', linewidth=1, label=f'Min: {min_time:.2f} ms')
+plt.axhline(y=max_time, color='orange', linestyle=':', linewidth=1, label=f'Max: {max_time:.2f} ms')
+
+plt.fill_between(runs, avg_time - std_dev, avg_time + std_dev, alpha=0.15, color='red', label=f'Std Dev: {std_dev:.2f} ms')
+
+plt.xlabel('Run Number', fontsize=12, fontweight='bold')
+plt.ylabel('Time (ms)', fontsize=12, fontweight='bold')
+plt.title('GPU Scalar Multiplication Performance\nGF(2^163) - sect163r2 - Lopez-Dahab (50 Runs)', fontsize=14, fontweight='bold')
+plt.grid(True, alpha=0.3)
+plt.legend(fontsize=10, loc='upper right')
+plt.xticks(range(1, num_tests + 1, 2))
+plt.tight_layout()
+
+plot_file = 'gpu_163_performance_plot.png'
+plt.savefig(plot_file, dpi=300, bbox_inches='tight')
+print(f"[SAVED] Plot saved as: {plot_file}")
 

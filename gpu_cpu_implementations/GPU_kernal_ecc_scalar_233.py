@@ -491,8 +491,8 @@ extern "C" __global__ void scalar_mult_233(
 # ============================================================
 # Compile and Run
 # ============================================================
-cuda_root = r"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.9"
-include_paths = [f"{cuda_root}\\include", f"{cuda_root}\\include\\crt"]
+cuda_root = "/usr/local/cuda-12.6"
+include_paths = [f"{cuda_root}/include", f"{cuda_root}/include/crt"]
 options = ('--std=c++11',) + tuple(f'-I{p}' for p in include_paths)
 mod = cp.RawModule(code=kernel_code, options=options)
 scalar_kernel = mod.get_function("scalar_mult_233")

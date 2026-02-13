@@ -1,44 +1,45 @@
 ============================================================
 GPU GF(2^233) Scalar Multiplication - Benchmark Statistics
+GPU: NVIDIA Jetson Orin Nano Super
 ============================================================
 Number of runs: 10
-Tests per run:  15
-Total tests:    150
+Tests per run:  5
+Total tests:    50
 
 ------------------------------------------------------------
 Per-Run Average Times (ms)
 ------------------------------------------------------------
-  Run  1: 209.44 ms
-  Run  2: 209.24 ms
-  Run  3: 204.63 ms
-  Run  4: 206.27 ms
-  Run  5: 209.12 ms
-  Run  6: 205.53 ms
-  Run  7: 207.38 ms
-  Run  8: 207.28 ms
-  Run  9: 205.65 ms
-  Run 10: 206.78 ms
+  Run  1: 609.52 ms
+  Run  2: 591.33 ms
+  Run  3: 593.48 ms
+  Run  4: 602.05 ms
+  Run  5: 609.47 ms
+  Run  6: 600.37 ms
+  Run  7: 601.22 ms
+  Run  8: 569.69 ms
+  Run  9: 580.90 ms
+  Run 10: 591.73 ms
 
 ------------------------------------------------------------
 Overall Statistics (across all individual test times)
 ------------------------------------------------------------
-  Mean:               207.13 ms
-  Median:             207.10 ms
-  Std Deviation:      6.45 ms
-  Variance:           41.5700 ms^2
-  Min:                190.40 ms
-  Max:                225.50 ms
-  Range:              35.10 ms
-  25th Percentile:    202.77 ms
-  75th Percentile:    211.48 ms
-  IQR:                8.71 ms
+  Mean:               594.98 ms
+  Median:             593.38 ms
+  Std Deviation:      24.81 ms
+  Variance:           615.5632 ms^2
+  Min:                534.38 ms
+  Max:                666.93 ms
+  Range:              132.55 ms
+  25th Percentile:    579.94 ms
+  75th Percentile:    608.08 ms
+  IQR:                28.14 ms
 
 ------------------------------------------------------------
 Per-Run Statistics (ms)
 ------------------------------------------------------------
-  Mean of run avgs:   207.13 ms
-  Median of run avgs: 207.03 ms
-  Std Dev of run avgs:1.60 ms
-  Min run avg:        204.63 ms
-  Max run avg:        209.44 ms
+  Mean of run avgs:   594.98 ms
+  Median of run avgs: 596.93 ms
+  Std Dev of run avgs:12.49 ms
+  Min run avg:        569.69 ms
+  Max run avg:        609.52 ms
 ============================================================
