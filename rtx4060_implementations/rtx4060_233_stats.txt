@@ -1,41 +1,186 @@
-====================================================================================================
-  ECC GPU Benchmark Results — NVIDIA RTX 4060
-====================================================================================================
-Script:         GPU_kernal_ecc_scalar_233.py
-Platform:       NVIDIA RTX 4060 (8GB GDDR6)
-Date:           2026-02-13 17:10:58
-Warm-up runs:   2
-Timed runs:     10
-----------------------------------------------------------------------------------------------------
-Run  Latency(ms)  GPU_Util(%)  GPU_Mem(MB)  Temp(°C)  Power(W)  Clock(MHz)  CPU_Util(%)    RAM(MB)  Energy(mJ)
-  1      197.919        100.0       1007.0       47       N/A        2790          3.8     3008.4         N/A
-  2      203.552         38.0       1007.0       47       N/A        2790          2.8     3007.3         N/A
-  3      202.008         72.0       1007.0       48       N/A        2790          3.4     3007.8         N/A
-  4      200.011         91.0       1007.0       48       N/A        2790          2.7     3006.3         N/A
-  5      198.204         41.0       1007.0       48       N/A        2790          3.8     3003.8         N/A
-  6      210.310         77.0       1007.0       48       N/A        2790          3.1     3000.1         N/A
-  7      206.154         94.0       1007.0       48       N/A        2790          2.2     2997.7         N/A
-  8      208.332         37.0       1007.0       48       N/A        2790          3.0     2998.2         N/A
-  9      208.560         69.0       1007.0       48       N/A        2790          3.1     2998.1         N/A
- 10      205.450         97.0       1007.0       48       N/A        2790          2.7     2998.2         N/A
-----------------------------------------------------------------------------------------------------
-Summary Statistics:
-  Latency:
-    Mean:       204.050 ms
-    Std Dev:    4.432 ms
-    Min:        197.919 ms
-    Max:        210.310 ms
-    Median:     204.501 ms
-  GPU Resources:
-    Avg GPU Util:     71.6 %
-    Avg GPU Memory:   1007.0 MB
-    Avg Temperature:  47.8 °C
-    Avg Clock Speed:  2790.0 MHz
-  Power & Energy:
-    Avg Power Draw:   N/A
-    Avg Energy/Run:   N/A
-    Total Energy:     N/A
-  Host:
-    Avg CPU Util:     3.1 %
-    Avg RAM Used:     3002.6 MB
-====================================================================================================
+===========================================================================
+FULL GPU BENCHMARK REPORT
+GF(2^233) Scalar Multiplication - sect233k1
+Lopez-Dahab Projective Coordinates + Itoh-Tsujii Inversion
+===========================================================================
+Date: 2026-02-13 18:36:51
+Benchmark Runs: 50 (+ 5 warmup)
+
+---------------------------------------------------------------------------
+1. HARDWARE PLATFORM
+---------------------------------------------------------------------------
+  GPU:                       NVIDIA GeForce RTX 4060
+  Compute Capability:        8.9
+  Streaming Multiprocessors: 24
+  GPU Clock Rate:            2490 MHz
+  Memory Clock Rate:         8501 MHz
+  Total Global Memory:       8.00 GB
+  L2 Cache Size:             24576 KB
+  Warp Size:                 32
+  Max Threads/Block:         1024
+  Max Threads/SM:            1536
+  Max Blocks/SM:             24
+  Registers/Block:           65536
+  Registers/SM:              65536
+  Shared Memory/Block:       48.0 KB
+  Shared Memory/SM:          100.0 KB
+  CUDA Version:              12090
+  CuPy Version:              13.6.0
+
+---------------------------------------------------------------------------
+2. KERNEL RESOURCE USAGE
+---------------------------------------------------------------------------
+  Kernel Name:               scalar_mult_233
+  Grid Size:                 (1, 1, 1)
+  Block Size:                (1, 1, 1)
+  Registers/Thread:          255
+  Shared Memory (static):    0 bytes
+  Constant Memory:           0 bytes
+  Local Memory/Thread:       4608 bytes
+  Max Threads/Block (kernel):256
+  PTX Version:               89
+  Binary Version:            89
+  Theoretical Occupancy:     2.08% (1/48 warps)
+  Note: Single-thread kernel - occupancy is intentionally low.
+        This kernel performs a single ECC scalar multiplication.
+
+---------------------------------------------------------------------------
+3. GPU MEMORY USAGE
+---------------------------------------------------------------------------
+  CuPy Pool - Used:          4.00 KB
+  CuPy Pool - Total Alloc:   4.50 KB
+  Input Buffers:             9 x 4 x uint64 = 288 bytes (Px,Py,Pz,a,b,k,Xout,Yout,Zout)
+  System RAM Used (avg):     2753 MB
+
+---------------------------------------------------------------------------
+4. LATENCY MEASUREMENTS
+---------------------------------------------------------------------------
+
+  Wall-clock latency (50 runs):
+    Mean:                    189.1804 ms
+    Median:                  189.6017 ms
+    Std Deviation:           7.3184 ms
+    Min:                     174.6414 ms
+    Max:                     213.0489 ms
+    5th Percentile:          178.7056 ms
+    25th Percentile:         184.5797 ms
+    75th Percentile:         193.4962 ms
+    95th Percentile:         198.8757 ms
+    99th Percentile:         210.6492 ms
+    IQR:                     8.9165 ms
+    Total:                   9459.0223 ms
+    Throughput:              5.29 ops/sec
+
+  CUDA event latency (50 runs):
+    Mean:                    205.8255 ms
+    Median:                  206.2346 ms
+    Std Deviation:           6.0565 ms
+    Min:                     193.8760 ms
+    Max:                     217.8795 ms
+    5th Percentile:          196.3959 ms
+    25th Percentile:         201.5767 ms
+    75th Percentile:         210.3563 ms
+    95th Percentile:         215.2711 ms
+    99th Percentile:         216.8233 ms
+    IQR:                     8.7796 ms
+    Total:                   10291.2736 ms
+    Throughput:              4.86 ops/sec
+
+  Per-Run Latency Detail:
+  Run   Wall (ms)     CUDA (ms)     Scalar k (hex)                                                  x_aff (hex)
+  -------------------------------------------------------------------------
+  1     183.0052      202.7786      0x1c6308d5e1bce99f48a89da88724fd1ca1594d25de4a4f72a85606903e4   0x120de9f9c3705bcbdd4dc9a9602341fd4bec4ff302bfd04a38825ce1486
+  2     178.6316      197.8798      0x188f41cd0082168cdde3d175689088c7b52c4c991ef898511cd3b6520f1   0x04625df0c5461aacbac3700fbaa34440664b95334256bc346f16f1dd383
+  3     186.2603      206.2766      0x12a7f1a335245f30b4211ef62ff24e9384d6ab44d7b718f6a0ae8d4f545   0x0327d997c56117a8d962b021a8cacb91b434f56d3ade7ce3199feedb2f5
+  4     195.0454      215.7240      0x1d7fd6316b6ba4278e1c34e764e44fc2fef0755eb56499b4a16fd2c33e9   0x1004f2b16222a70aa4e077594818861ed1ca61aef772f3a2e45b0eb9001
+  5     179.1653      198.0549      0x1a78dfff464d562f4938126038415434863cc3ac68635b3d30bc810d484   0x1212dcdbb203d56cf9a5358953768fb5b110d4e2d304d60d350fd682f79
+  6     181.1839      201.2447      0x1344f344fb199e65df58e590d5e88987e4a8852846e4159fd21ae106e70   0x1fca5b3f80c2a0b959ebe48ec00858d868625cbeaf426b75b099c1b579c
+  7     180.8480      200.8094      0x1b700d2c9842acbc8e998389c12e55a8e5db7030f247493d3789887cba8   0x0aebf629ed61b47ea21b9c6be7805c2ccf2d09ffaf87d7f71aa10133bc0
+  8     177.1102      196.5834      0x1e3ba4d00ab264ec8a0d4cac2302e9f86c5356174be182997e443ac2895   0x1cf6210b6ff99e1e5a631a07694b089490469fcf5490c5ca5deae74d57f
+  9     174.6414      193.8760      0x1d6afc42cdd8b39e34345904f080480cb221181c5e1da9c4ce8050f8072   0x00cc2abbdbd5f8d5e4c7871c0fc69ec5ecf6aa2b48bb86dffa712ddc48b
+  10    192.3382      213.3146      0x17ffd49456e1d1b98627b2e50bdf2808ad7c4e1ff07fc499644e90edbfc   0x11cf98d60986f37bbec4ad372ea1629893544afe6d641b5ae197a1ce4cd
+  11    181.8352      200.6147      0x1e1906f903a2f38f1860ca678ae92718a793417a23815a108bfb8c7d35e   0x08b449dad4199b6200e514a72acc3c9fb52b6ae269b385c072c9c0a186b
+  12    189.7540      206.5877      0x1a73c4ec62586bc2163073d53258da8ccda5fcee796733c7ad504d4cc09   0x0e24a2418ad09675af71d835c582a64aceefaa555eb0178b144d7073a3d
+  13    190.4305      207.1743      0x155d91112d81d4b254318e9864fc2cd0c7b79dc6dd4e8dca4be34be6f74   0x0b084cc2a91209bb77f0b77735c44420c80951b8a8e94213a3a65d6c495
+  14    182.0793      197.8798      0x180117b783e90bb43654c24cf3a8206c887fc9abc093127040cba2e2dfa   0x0b68d2513ec89938db9e74f2c1557266f73991c7e3daaf739c4b13179c2
+  15    197.1057      214.9417      0x19df61d80a6cc27d42badfccb382ecfcea91ea317ddd8a97a76119d3a29   0x1db1b51f8c0f98ddab8940461492c7712012ef9a76080b21a76a30d9752
+  16    188.3826      205.3097      0x1dac195560364d913b7854c98dc28b5a7bbc16ae52c517969a53d59b226   0x18fc1b1a3116d503d448e039f24aaa4422b9821ddb9c2424e9f69e3766c
+  17    192.5209      209.6353      0x10e2c0c0f06169239752599e33d9dfd1f12fdd958ba04b7d50ce78d3d7f   0x091a132859ab1987f4ce9eeda676700322003757bee08265c580ad3f098
+  18    189.4743      206.1496      0x1ce3970200fb071c1cee4a147ac1072bfb2c74c34ee825f831dcfd4cfc9   0x0f556ae876df9a30f10d01d5c44cd5baabfeb85fdd5d2be8d60f254e5e8
+  19    190.3788      206.8418      0x182eccba8d03518b62aec07b7c9b862e3f3cf9ca389c168c3e5f194a6f3   0x167c35cf90bba31c27ffd61a104f04f304ca9a202bca136171c2937f7e0
+  20    188.4970      205.7001      0x10cd6868fc60239d5e09e7fa28652ec43f8967e2da5024ae95cf49ee4bd   0x11ecfca89c84211a2c596e6240c2303dcda5717c728a186559ae35aade2
+  21    189.7598      206.9238      0x1bbd20bb425ab7b5ffa52bf930a6c53446a690de9639ec508002e37e99a   0x005f5c70500f20058d4ac68b3a96eed611ae4be26b0d4f668f0984275a2
+  22    194.2080      211.6052      0x1b994d330a2c5301b01f26563decd7522465f6fde6ff3636e0e8d789c7a   0x1c2d3f5fc14b636794d203b93bc721cddfaec5bb8bab5a80ddcf34fc48f
+  23    186.1526      202.7151      0x1d70e39051f7e8be23af9333230707b7769442ca72ee095031f0a78d451   0x00bc292f93a92287bcdff221e6e163c476c8bb8e82326d847039d3f35ac
+  24    190.0765      206.7886      0x10f4c81e824f4df80c32b1256d4d5e9543913f9fca88abd34fcf3cf15c4   0x0cb410984750dca3aa03078a67f1425d00390d2fa7329346cf86d8981fd
+  25    191.7285      208.4946      0x1cf086494e8a4c97f8ede56f19e6ff1b8e6b15258f11117f12aaae23271   0x0f4995148f11f92d8e0c109a6f3870e491c5bf47d9abd2c3f0043d786de
+  26    197.5043      215.4350      0x1055fba3b3b505891faadb7e0da175d9b2aafff4b39333c58720379724f   0x0af25d070a03f64e93b336ac8cfb9e3fbaedd32b904a2ee713dad781cd3
+  27    199.9906      217.8795      0x117d3f17ce03095e0894dbf1beca25f89b3f39f2eda7f465d26f998de76   0x03fdf65959a5870ae3debdafc02adefb299561e85cca83368d8ddd0dc78
+  28    186.0602      202.5728      0x1d4d1d803a90090002f2bdb018233f837c63d7843578d3a57769fde3c8b   0x1b35d61783f48aafe21b9a6f1f8c5d21e02dccb86c2f99d8d5f6c0ccd56
+  29    189.4820      206.1926      0x16e31170775e0b64efa92c4a77d4738c228c557397c3fe854ae929a1471   0x1ab937d8ba57eb5868b6bef13b136a200bf2116cc300f53ca59bd5842c3
+  30    181.2700      197.2295      0x15f16820a1c0769eced3f376b0a9914f120636139260af47205008b4e1f   0x0d8561cd0fb009972c53c3b82e3b074a8c501ad5d8214cd536905c8f63d
+  31    197.5129      214.6929      0x1e33f79959e3a5fe8a32bd0d8ef98db499e9105c5b11febc673388a95a7   0x0889c974095584494e79ee2e0c6b2aa8c72756ccfd595291ff8e8072224
+  32    178.7960      194.1166      0x14f19848aadf6dc10823aa4810ff4045a03f98a899969546e11028f483a   0x1275ed7b07bba9eee8fa5e37292f6dee724bf73867bc10bca1927fa9716
+  33    184.0862      200.4582      0x1c2578b419f05794048f93df063f245c1245898a024f07e0575bfb6b5d8   0x1b56fa0b5761b486b5f68e3f561441b2b992aed438bc658370529d9a88d
+  34    197.2991      215.0707      0x1628ba6fdd7486801e171794f1b7c17a56bbbe2fd5dd9cdc0ddf6910b87   0x077f9add4a39606a2b5f46231b6818487dcad8db41b7bf988d8e55fe914
+  35    180.1216      196.2424      0x135a43896846ce40a0f7acc01507c5b22e962581857ec19309994b6b34e   0x1414963a9686afa2ea263af50a41e079974da2b034f6f4e8faf2059e495
+  36    189.0831      205.9100      0x1577210de0212dfe8fcae40c365896ea240515f763eb7471a832f51ecf3   0x090332e71ec55fe3e4da084ba24aca7b72533a66e5bd11f4be1b6680696
+  37    194.0566      211.1345      0x13179f8eedf295a1b6533159316239ed5f9ad9c6bb9689d00cfd1cb86c4   0x10a923b69a23a7532bda028e638c4e8ab36e9a6348af36a51abbfb0c9c0
+  38    190.0043      206.5835      0x128770652f612d3d4c8163544801a5791dff6bee7fec88e9d1f0c907354   0x13c04b8ba8e3ad565b16bb35d60d68cf22d3a877b789e1ebc02532edefd
+  39    194.2357      211.9471      0x156598d1c59d3e047d04e95eb23f5beffe679bd91d2a55a6348c83be223   0x1a4dff902fcd0b7f03c761955f2ab86cabe6f03fe592db875624e395475
+  40    194.3258      211.8646      0x18b55882e225d9aef13dfa46fe31be4a3149a6099d3c3cb7f3f4b5cb386   0x1628afffcb2d557e0161e06cebb73d8ceea85c16e5cd86f57808955d2cd
+  41    186.6507      203.3623      0x1920dc7304ea8fd44ad30bf807582aaf2becfc964f464a43298f7ea2682   0x0e94fcf62173920b3640c15c3e65a914c12bd2c6ca52a0ddc179e730de9
+  42    191.0478      207.9846      0x110adbdbda130f22f8af5a0eda87880b3f8b9a30b7d41af13c276cbe1b6   0x14cfe9cc4feadd4b7bcc6a097b9459d76771b9fbfeff5c2381e2ce4638a
+  43    190.0051      206.7188      0x142848646692433f37a958c19fa3489b779e27ed098d1db72991d582f7b   0x199da709d22cafbc131af0e03ab5d7362b537ef1fe1725e223e681bb97a
+  44    193.8214      210.5966      0x1a9b814f169a60a1600c877eb8f5ea74bbc4c27a3daebb7f8954ff6ee06   0x0355e3054c3247d77b9cceaf4f87aab4a9345bb2074f379a8f757413ce6
+  45    187.9837      205.1357      0x13527a6cc42c1f638e97578f6218eb25b6cf7265c9cb140dd862e8f8305   0x131f6c39ff692215316ad4c3c0b948f3c037daa7ad0aa0f2a1ebf2ac3c6
+  46    187.9227      204.8900      0x183e4e0a2f25994f74ae099a8ae27233b2e0d3acb83cf69b534c6cfc8b0   0x1c5161f1383fa90b7f6868bd9c82679d840b343b999dbb92b6a4bb8fe70
+  47    186.2272      202.9340      0x1169e812b01bbaec72de951727f9eec485914269cae21c87a1d640eed10   0x082c82ffc91d83cbab7b62fe9fd9cac82cc0bc45776a1c0c50541e6ea5e
+  48    189.7215      196.9016      0x15218ea2b231e229e90e300a5726c18aac6f3b4c8b4f4c8110a8c1f57ad   0x0304f3a1d27507703e1a48e1dace021c4f51de775932e6b89058fbb352c
+  49    213.0489      212.9314      0x1b98a3266447caeae8ffed5b74e467e9d281fccc3ee84b30d03bf499fa8   0x0c51cf6fce717bd33a7f2838e8a5295e8867177f7bb285185453d5f90d2
+  50    208.1516      208.5847      0x1d5580bae7ecf7d744d8043c5ff519e8373c5c0331ede8de52152407ab9   0x1d0d7854cb2ac058efafef71e737d5ba7eed2fbbc0ca6dda660529cde76
+
+---------------------------------------------------------------------------
+5. POWER CONSUMPTION
+---------------------------------------------------------------------------
+  Idle GPU Power:            N/A (WSL2 does not expose power.draw)
+
+  Under Load:                N/A (WSL2 does not expose power.draw)
+  Note: nvidia-smi power.draw is not supported under WSL2.
+        GPU power limit is 115 W (TDP).
+
+---------------------------------------------------------------------------
+6. THERMAL MONITORING
+---------------------------------------------------------------------------
+  GPU Temperature (50 samples):
+    Mean:                    49.4 C
+    Min:                     49.0 C
+    Max:                     50.0 C
+
+---------------------------------------------------------------------------
+7. GPU UTILIZATION
+---------------------------------------------------------------------------
+  GPU Utilization (50 samples):
+    Mean:                    87.7%
+    Min:                     82%
+    Max:                     100%
+
+  CPU Average Load (50 samples):
+    Mean:                    3.9%
+    Min:                     3.0%
+    Max:                     6.0%
+
+===========================================================================
+SUMMARY
+===========================================================================
+  Curve:                     sect233k1 (GF(2^233))
+  Algorithm:                 Lopez-Dahab double-and-add
+  Inversion:                 Itoh-Tsujii (addition chain)
+  Field Representation:      4 x 64-bit limbs (polynomial basis)
+  GPU:                       NVIDIA GeForce RTX 4060
+  Avg Latency (CUDA):        205.8255 ms
+  Avg Latency (Wall):        189.1804 ms
+  Throughput:                4.86 ops/sec
+  Registers/Thread:          255
+  Avg GPU Temp:              49.4 C
+===========================================================================
