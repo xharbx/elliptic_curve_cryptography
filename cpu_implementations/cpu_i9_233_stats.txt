@@ -1,0 +1,32 @@
+============================================
+  ECC CPU Benchmark Results
+============================================
+Script:       scalar_mult_233.py
+Platform:     Intel Core i9-14900K
+Date:         2026-02-13 16:50:47
+Warm-up runs: 2
+Timed runs:   10
+--------------------------------------------
+Run  Latency(ms)  CPU_Util(%)   RAM(MB)  Power(W)  Energy(mJ)
+  1      1356.62          3.4    2376.8       N/A         N/A
+  2      1367.15          3.6    2382.1       N/A         N/A
+  3      1357.34          3.4    2383.6       N/A         N/A
+  4      1352.96          3.5    2382.8       N/A         N/A
+  5      1355.25          3.5    2385.0       N/A         N/A
+  6      1386.53          3.5    2376.6       N/A         N/A
+  7      1394.66          3.4    2341.4       N/A         N/A
+  8      1403.09          3.7    2345.3       N/A         N/A
+  9      1391.69          3.4    2348.0       N/A         N/A
+ 10      1378.33          3.4    2348.0       N/A         N/A
+--------------------------------------------
+Summary Statistics:
+  Mean Latency:   1374.36 ms
+  Std Dev:        18.80 ms
+  Min:            1352.96 ms
+  Max:            1403.09 ms
+  Median:         1372.74 ms
+  Avg CPU Util:   3.5 %
+  Avg RAM:        2367.0 MB
+  Avg Power:      N/A
+  Avg Energy:     N/A
+============================================
