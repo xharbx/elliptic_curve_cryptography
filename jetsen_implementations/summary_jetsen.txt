@@ -1,0 +1,74 @@
+===========================================================================
+JETSON ORIN NANO SUPER - GPU BENCHMARK SUMMARY
+ECC Scalar Multiplication over Binary Fields
+===========================================================================
+Date: 2026-02-13
+Platform: NVIDIA Jetson Orin Nano Super (Compute 8.7, 8 SMs, 1020 MHz)
+Algorithm: Lopez-Dahab double-and-add (Projective Coordinates)
+Inversion: Itoh-Tsujii (addition chain)
+CUDA Version: 12090
+CuPy Version: 13.6.0
+Benchmark Runs: 50 (+ 5 warmup) per curve
+
+---------------------------------------------------------------------------
+LATENCY & THROUGHPUT
+---------------------------------------------------------------------------
+  Curve              Field Repr.       Avg CUDA (ms)   Avg Wall (ms)   Throughput
+  sect163r2          3 x 64-bit        137.0525        137.7324        7.30 ops/sec
+  sect233r1          4 x 64-bit        235.5853        235.9036        4.24 ops/sec
+  sect571r1          9 x 64-bit        1806.6469       1807.1954       0.55 ops/sec
+
+---------------------------------------------------------------------------
+KERNEL RESOURCE USAGE
+---------------------------------------------------------------------------
+  Curve              Registers/Thread  Local Mem/Thread  Max Threads/Block
+  sect163r2          255               1968 bytes        256
+  sect233r1          255               4096 bytes        256
+  sect571r1          255               3584 bytes        256
+
+  Grid Size:         (1, 1, 1) for all curves
+  Block Size:        (1, 1, 1) for all curves
+  Occupancy:         2.08% (1/48 warps) - single-thread kernel
+
+---------------------------------------------------------------------------
+POWER CONSUMPTION
+---------------------------------------------------------------------------
+  Curve              Idle (mW)   Avg Board (mW)   Energy/Op (mJ)
+  sect163r2          7297        7780             1066.30
+  sect233r1          7416        7620             1795.28
+  sect571r1          7376        7788             14069.59
+
+---------------------------------------------------------------------------
+THERMAL MONITORING
+---------------------------------------------------------------------------
+  Curve              Avg GPU Temp (C)  Avg CPU Temp (C)
+  sect163r2          54.2              53.8
+  sect233r1          54.6              54.2
+  sect571r1          55.9              55.5
+
+---------------------------------------------------------------------------
+GPU UTILIZATION
+---------------------------------------------------------------------------
+  Curve              Avg GPU Load (%)  Max GPU Load (%)  Avg CPU Load (%)
+  sect163r2          89.6              99                54.0
+  sect233r1          93.7              99                50.3
+  sect571r1          98.3              99                54.3
+
+---------------------------------------------------------------------------
+LATENCY STATISTICS (CUDA event, ms)
+---------------------------------------------------------------------------
+  Curve       Mean      Median    StdDev    Min       Max       P5        P95
+  sect163r2   137.05    135.79    8.13      118.01    175.41    127.06    146.52
+  sect233r1   235.59    228.71    21.73     212.92    299.22    214.17    285.61
+  sect571r1   1806.65   1800.80   32.36     1748.28   1887.35   1760.60   1859.75
+
+===========================================================================
+KEY OBSERVATIONS
+===========================================================================
+  - GF(2^571) is ~13.2x slower than GF(2^163) and ~7.7x slower than GF(2^233)
+  - Energy per operation scales with latency: 571-bit uses ~13.2x more energy than 163-bit
+  - Board power remains stable across all curves (~7.6-7.8 W)
+  - GPU temperature stays within safe range (54-56 C) for all field sizes
+  - GPU utilization increases with field size (89.6% -> 93.7% -> 98.3%)
+  - All kernels hit the 255 register cap, causing register spilling to local memory
+===========================================================================

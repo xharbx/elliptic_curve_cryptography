@@ -1,0 +1,216 @@
+===========================================================================
+FULL GPU BENCHMARK REPORT
+GF(2^163) Scalar Multiplication - sect163r2
+Lopez-Dahab Projective Coordinates + Itoh-Tsujii Inversion
+===========================================================================
+Date: 2026-02-13 17:55:33
+Benchmark Runs: 50 (+ 5 warmup)
+
+---------------------------------------------------------------------------
+1. HARDWARE PLATFORM
+---------------------------------------------------------------------------
+  GPU:                       Orin
+  Compute Capability:        8.7
+  Streaming Multiprocessors: 8
+  GPU Clock Rate:            1020 MHz
+  Memory Clock Rate:         918 MHz
+  Total Global Memory:       7.44 GB
+  L2 Cache Size:             2048 KB
+  Warp Size:                 32
+  Max Threads/Block:         1024
+  Max Threads/SM:            1536
+  Max Blocks/SM:             16
+  Registers/Block:           65536
+  Registers/SM:              65536
+  Shared Memory/Block:       48.0 KB
+  Shared Memory/SM:          164.0 KB
+  CUDA Version:              12090
+  CuPy Version:              13.6.0
+
+---------------------------------------------------------------------------
+2. KERNEL RESOURCE USAGE
+---------------------------------------------------------------------------
+  Kernel Name:               scalar_mult_163
+  Grid Size:                 (1, 1, 1)
+  Block Size:                (1, 1, 1)
+  Registers/Thread:          255
+  Shared Memory (static):    0 bytes
+  Constant Memory:           0 bytes
+  Local Memory/Thread:       1968 bytes
+  Max Threads/Block (kernel):256
+  PTX Version:               87
+  Binary Version:            87
+  Theoretical Occupancy:     2.08% (1/48 warps)
+  Note: Single-thread kernel - occupancy is intentionally low.
+        This kernel performs a single ECC scalar multiplication.
+
+---------------------------------------------------------------------------
+3. GPU MEMORY USAGE
+---------------------------------------------------------------------------
+  CuPy Pool - Used:          4.50 KB
+  CuPy Pool - Total Alloc:   5.00 KB
+  Input Buffers:             9 x 3 x uint64 = 216 bytes (Px,Py,Pz,a,b,k,Xout,Yout,Zout)
+  System RAM Used (avg):     2588 MB
+
+---------------------------------------------------------------------------
+4. LATENCY MEASUREMENTS
+---------------------------------------------------------------------------
+
+  Wall-clock latency (50 runs):
+    Mean:                    137.7324 ms
+    Median:                  136.7076 ms
+    Std Deviation:           8.1345 ms
+    Min:                     118.0549 ms
+    Max:                     175.9625 ms
+    5th Percentile:          127.7991 ms
+    25th Percentile:         134.1434 ms
+    75th Percentile:         140.1411 ms
+    95th Percentile:         147.0318 ms
+    99th Percentile:         164.7451 ms
+    IQR:                     5.9977 ms
+    Total:                   6886.6222 ms
+    Throughput:              7.26 ops/sec
+
+  CUDA event latency (50 runs):
+    Mean:                    137.0525 ms
+    Median:                  135.7855 ms
+    Std Deviation:           8.1308 ms
+    Min:                     118.0102 ms
+    Max:                     175.4082 ms
+    5th Percentile:          127.0566 ms
+    25th Percentile:         133.4601 ms
+    75th Percentile:         139.6385 ms
+    95th Percentile:         146.5230 ms
+    99th Percentile:         164.3799 ms
+    IQR:                     6.1783 ms
+    Total:                   6852.6237 ms
+    Throughput:              7.30 ops/sec
+
+  Per-Run Latency Detail:
+  Run   Wall (ms)     CUDA (ms)     Scalar k (hex)                               x_aff (hex)
+  -------------------------------------------------------------------------
+  1     175.9625      175.4082      0x7eb8ad266c24ccd19887969d61fde5e850b7229c3   0x29dc3d681dcc89c14229a05cbacaa4265f3a9ec95
+  2     144.9100      144.6108      0x63eeb156cb9c96fb7a65e6009a57e41b098abfe88   0x4ab59aae00c2a73fac8631e11b1fae63ab0d447ae
+  3     144.7955      143.3372      0x74e00b64c089f6dab7366963b29ec4f3fe3e533fd   0x3bb506a9f76634bc474841295ef9494d51e7c182e
+  4     146.8564      145.7471      0x73fc9177a3f7bb686d39e2233b51d6c64014af93c   0x5c5f53232ddca3396ee9c15faa6e8312d5001c473
+  5     137.9816      137.5829      0x6f483a41fbbe4636a43fc9aaf9dc1dc51ee2e3828   0x718eef0ff1851b60b1878477e02aa878e0baf6413
+  6     138.3362      137.3741      0x540588ad279ec8fd9e167e2c25e0dfa14d531e495   0x7568d3c9d019046e32d74246069ed72d9bc73c521
+  7     129.6890      129.1135      0x5659008bcc880d7a20dac05946ae55827c157d26f   0x5616fad24203f48345f8c4156772786a4525016fe
+  8     134.7967      133.5329      0x6da2943269e4ccc51eb2909ae51c919eee5081a03   0x039073fd580e38789f07ee6cd3023db6c5176e164
+  9     133.4073      133.2483      0x4b103e7825905407c98c41648fe1f277b4f0aa884   0x717698cd81ad7d1a8fdd7bcf7e7415fd21a063b4f
+  10    121.9885      121.8350      0x79e011aa0125315e0a66d94d016788b0cecb1e136   0x2db4ca7b0c909061f166d947d3a846d867d5b0571
+  11    137.3522      135.5611      0x48e6a3129d1c2465fb21ab05a8251554aadf86d4e   0x5f6e7f4bbf60d006eaf483ad228aa4037297b3aea
+  12    133.6688      133.4382      0x5ce5e0b001c450d91120e96788f79bd1d0a8ebe26   0x04bc9302a2523737b60ccb1f9bf3502cf5cb4a869
+  13    131.7334      130.7764      0x4ab5f225a62383ce29611f4ed052ee5fe47ec86e0   0x763adbc0b9717938505e7fcfe29a880ae89d006c0
+  14    142.7438      141.2643      0x45efaf43713ec2c85edc9fecd4a91652e6c4bb462   0x67abecc81b28f1330836e219b53287f8db2d92b56
+  15    135.5541      135.4079      0x7800af8c89ee02a186099a245c00ed3aba08d1bcb   0x0fc2cb07eb451f95ce972afa0f8e135353f70a87c
+  16    141.3790      141.2333      0x4bdc7985c6f95e99797bb91868bb0d6a4f0924faf   0x70d46d76dede00a93c56db888a61c757d270f1ad3
+  17    128.8971      128.8485      0x6144a46dfb47499700e5e09070d838517e0313943   0x16e4752a7aa1e52c8d9f06f68a93e78b2de287636
+  18    145.3797      144.7428      0x7785d35f5da2d5b6b515893e86e891369be48365d   0x423b694a6bfe56a4294b3270027d8c00b6fb69bd2
+  19    137.4146      137.2766      0x629690f103c94792ef05ccefdfcda67ca15852013   0x0cb3fdd7aa77c32cb0bb71f9fd799abbad72df4cb
+  20    133.2557      133.2166      0x4e43b8f7e1282072b13ba00d23801ae08b1508e5d   0x05aefc852a49ce2e9f892e250e9a897220220314f
+  21    135.3684      135.3300      0x7fe72310fb161111003c8ff820cbafc35c34bfe8c   0x7966abbc63e68bb17a23798f3bdabbf62468edd09
+  22    147.0683      146.2403      0x595ce17d9f572aa76c676ed272c469e4c494eeee7   0x2045b8e1205e43207cb4d2f1ac2f8bf3d2504960b
+  23    136.5040      136.4686      0x52ad9f1cd386e02eab7288877f94301d91fd4924f   0x3b05318cb277ded1c35df6336a1cfcfcaef7edac6
+  24    133.6637      133.5261      0x6a58447a1b7767d3243c16a2705aeb42303665eb5   0x5cedfcaae5111d5eed485c4c8e8a0b7966de26e25
+  25    118.0549      118.0102      0x4c248ec5fdc542080545254a163564fcad92cb14c   0x5e98263d5f4820f2461f4fcd53bc7067889cd0630
+  26    136.5455      136.1046      0x5fa84cd3e358c13b7a8bc19bcc749376cde5f0a2c   0x71a27158b787f15a6d01779033a4684c0c82cc64b
+  27    133.5303      132.9681      0x6054e0ce4821f295b07ce698520191bd8f1d2ab97   0x76d1f594e6f7fe1b9648fdc671dcb38919c61b158
+  28    140.7713      139.1759      0x729a4aeee589ebe87876b4ec859f6ec1ccc18b895   0x57e2913e65ebca4612326ececc78931437f4da650
+  29    139.5794      139.4087      0x6f24e0c7bcaf9cd1d28ff23180ae233148f16ce8e   0x05e750891cf4605d8dfb1b9e07e975c4d1a27469d
+  30    135.5553      134.6332      0x6e71885edde86829e99a129e9c0742806edbc3ea8   0x5cf892ef45a31bb24a3358aa204239f15802d5eb9
+  31    134.7546      134.5950      0x43958bd15a4719a8b49ec1c7a796ae99539138a55   0x35f7193764975da9f35a9a353432439474a396f61
+  32    138.0672      137.9035      0x597ee989f0b57e43d215dd4143bab97564a18303d   0x68235ff6224c5be01be87f34f0c4317efb784f705
+  33    138.2394      137.8280      0x6ecd7bede20a080887a7de9910e0563d8f0cda80e   0x2084a9e210e2a12f9631cfd80b4d059e056b8e2a7
+  34    134.1623      131.3573      0x543574e6e6921b48baeeafdde77464c71719a2855   0x4f7bbe6b279183e1e6ba1130485d6a2f7723541d8
+  35    140.7390      140.5798      0x74dfc5f7f173a8ede9b592d08e1cac72c03104043   0x7ae27beb35eb4933e41ce3a5b2c2bb98280a1dad2
+  36    137.6966      137.5356      0x62cd3135c454ede0d143673028c7b9f1892feed8e   0x7b67a510e0574c9063eebb52318804263acd9d2a0
+  37    136.2434      135.4745      0x432b40d7ee7f3d53398187799da75b327b3dc008a   0x39af830f8d163429664c209ef7358041605709dc1
+  38    146.9871      146.7544      0x68fbb606377507dd2bcf2efcd4c4536e597b56710   0x471ac93718a260dc14529db86e0eb9dcd094376ec
+  39    137.1011      135.7574      0x5c6c9e74bd4cc425ea0ed0b9b52e75764d01a08a8   0x4fce7f874cccdb58343f17cd3c1c717151e52f01c
+  40    133.2686      132.9730      0x568c18bb759e597dad685d9a895a1475221d5c1ca   0x2a83732c6fe7faf4e1d8663fcef2dd007aec47108
+  41    134.7681      134.6179      0x4c63a4bf6900003d281b984f19a248e8b87d167ca   0x7e96195f3896acc26e86cc45727690d4b2078674a
+  42    153.0698      152.9015      0x4affd5de55f9d127c00db5b3697e2ecb3edbba07d   0x076f72ad307fecb68223d756e279c23a39d8d73de
+  43    135.9727      134.3310      0x74ca31e644eea020b288731849ea0d99175d37bc0   0x19b7fd91817aececcd074ed0bb2d832e973718651
+  44    139.7631      139.7150      0x5049d387bd2703e3aa96783a9903baee0fe7eeaf6   0x466f63a811dc4d2bb8ef999cc4b8afd577775fbfc
+  45    139.3020      136.7555      0x689d1253c70e3ec0bbe3babb7ee0f8c7a601403fd   0x19189a1aa1bbe73b4975d048193751718a632b55b
+  46    140.2671      140.1181      0x5abd21ba67cfdeb85e5b309500646aaa3097de05c   0x091ff09934fd194bd88338eb526028f901cb1fc69
+  47    134.1372      132.7266      0x48053cd2b74e1a0b7106927d4b27c7981dce4309d   0x06d570202d2a637bf2e4d889c59a0698bf621e04c
+  48    135.5694      133.8739      0x5b49e59d7cb232ce74107ac8e7b2ae086c63ffd41   0x0009e87e0359a01beafac057573ec45f8cf520f4f
+  49    136.8698      135.8137      0x763b3d6ae17043bd3781d038766d38c2b8ba8aeb3   0x004576ff5b9ac742266b50cab9b59e7720738a8fb
+  50    126.9007      125.5905      0x6136a8c8408001a7aace268e124d16010b33161d0   0x368da27a36efc87304ff81742a6477ae473fe0ca4
+
+---------------------------------------------------------------------------
+5. POWER CONSUMPTION
+---------------------------------------------------------------------------
+  Idle Power (VDD_IN):       7297 mW
+
+  Under Load (tegrastats, 37 samples):
+    VDD_IN (Total Board):
+      Mean:                  7780 mW
+      Min:                   6669 mW
+      Max:                   7974 mW
+      Std Dev:               221 mW
+
+    VDD_CPU_GPU_CV:
+      Mean:                  2682 mW
+      Min:                   1632 mW
+      Max:                   2861 mW
+
+    VDD_SOC:
+      Mean:                  1698 mW
+      Min:                   1671 mW
+      Max:                   1714 mW
+
+  INA3221 Sensor Readings (50 samples):
+    Mean Power:              7806 mW
+    Min Power:               6829 mW
+    Max Power:               7974 mW
+
+  Energy per Scalar Multiplication:
+    Avg Power:               7780 mW
+    Avg CUDA Time:           137.0525 ms
+    Energy/Op:               1066.2979 mJ (1066297.87 uJ)
+
+---------------------------------------------------------------------------
+6. THERMAL MONITORING
+---------------------------------------------------------------------------
+  GPU Temperature (37 samples):
+    Mean:                    54.2 C
+    Min:                     53.8 C
+    Max:                     54.6 C
+
+  CPU Temperature (37 samples):
+    Mean:                    53.8 C
+    Min:                     53.2 C
+    Max:                     54.2 C
+
+---------------------------------------------------------------------------
+7. GPU UTILIZATION
+---------------------------------------------------------------------------
+  GR3D GPU Frequency Load (37 samples):
+    Mean:                    89.6%
+    Min:                     0%
+    Max:                     99%
+
+  CPU Average Load (37 samples):
+    Mean:                    54.0%
+    Min:                     37.3%
+    Max:                     73.2%
+
+===========================================================================
+SUMMARY
+===========================================================================
+  Curve:                     sect163r2 (GF(2^163))
+  Algorithm:                 Lopez-Dahab double-and-add
+  Inversion:                 Itoh-Tsujii (addition chain)
+  Field Representation:      3 x 64-bit limbs (polynomial basis)
+  GPU:                       Orin
+  Avg Latency (CUDA):        137.0525 ms
+  Avg Latency (Wall):        137.7324 ms
+  Throughput:                7.30 ops/sec
+  Registers/Thread:          255
+  Avg Board Power:           7780 mW
+  Avg GPU Temp:              54.2 C
+  Energy/Op:                 1066.2979 mJ
+===========================================================================
