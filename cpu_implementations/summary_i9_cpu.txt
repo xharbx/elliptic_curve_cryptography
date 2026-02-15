@@ -1,0 +1,59 @@
+===========================================================================
+Intel Core i9-14900K - CPU BENCHMARK SUMMARY
+ECC Scalar Multiplication over Binary Fields
+===========================================================================
+Date: 2026-02-14
+Platform: Intel(R) Core(TM) i9-14900K (24P+E cores, 32 threads)
+Algorithm: Lopez-Dahab double-and-add (Projective Coordinates)
+Inversion: Itoh-Tsujii (addition chain)
+Implementation: Pure Python (arbitrary-precision integers)
+Python: 3.13.5 (CPython)
+OS: Windows-11-10.0.26200-SP0
+Benchmark Runs: 50 (+ 5 warmup) per curve
+
+---------------------------------------------------------------------------
+LATENCY & THROUGHPUT
+---------------------------------------------------------------------------
+  Curve              Field Repr.       Avg Wall (ms)   Throughput
+  sect163k1          Python bigint     832.0319        1.20 ops/sec
+  sect233k1          Python bigint     2518.7991       0.40 ops/sec
+  sect571k1          Python bigint     37315.6442      0.03 ops/sec
+
+---------------------------------------------------------------------------
+POWER CONSUMPTION
+---------------------------------------------------------------------------
+  Power data not available on this platform.
+  CPU TDP: 125 W (PBP) / 253 W (MTP)
+
+---------------------------------------------------------------------------
+THERMAL MONITORING
+---------------------------------------------------------------------------
+  Temperature data not available on this platform.
+  Requires admin privileges or hardware monitor software.
+
+---------------------------------------------------------------------------
+CPU UTILIZATION
+---------------------------------------------------------------------------
+  Curve              Avg CPU Load (%)    Max CPU Load (%)    Avg RAM (MB)
+  sect163k1          9.9                 13.4                21808
+  sect233k1          9.7                 11.7                21759
+  sect571k1          8.3                 9.5                 21661
+
+---------------------------------------------------------------------------
+LATENCY STATISTICS (Wall-clock, ms)
+---------------------------------------------------------------------------
+  Curve       Mean      Median    StdDev    Min       Max       P5        P95
+  sect163k1   832.03    831.74    20.66     775.98    867.31    797.85    864.95
+  sect233k1   2518.80   2518.25   63.30     2359.89   2627.63   2409.72   2612.86
+  sect571k1   37315.64  37330.74  630.91    35977.78  38642.07  36332.00  38291.29
+
+===========================================================================
+KEY OBSERVATIONS
+===========================================================================
+  - GF(2^571) is ~44.8x slower than GF(2^163) and ~14.8x slower than GF(2^233)
+  - GF(2^233) is ~3.0x slower than GF(2^163)
+  - Power data not available (CPU TDP: 125W PBP / 253W MTP)
+  - CPU utilization across field sizes: 9.9% -> 9.7% -> 8.3%
+  - Single-threaded Python execution (1 of 32 logical cores)
+  - Pure Python bigint arithmetic (no C extensions or SIMD)
+===========================================================================

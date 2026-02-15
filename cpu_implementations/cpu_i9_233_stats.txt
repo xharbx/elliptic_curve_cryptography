@@ -1,32 +1,165 @@
-============================================
-  ECC CPU Benchmark Results
-============================================
-Script:       scalar_mult_233.py
-Platform:     Intel Core i9-14900K
-Date:         2026-02-13 16:50:47
-Warm-up runs: 2
-Timed runs:   10
---------------------------------------------
-Run  Latency(ms)  CPU_Util(%)   RAM(MB)  Power(W)  Energy(mJ)
-  1      1356.62          3.4    2376.8       N/A         N/A
-  2      1367.15          3.6    2382.1       N/A         N/A
-  3      1357.34          3.4    2383.6       N/A         N/A
-  4      1352.96          3.5    2382.8       N/A         N/A
-  5      1355.25          3.5    2385.0       N/A         N/A
-  6      1386.53          3.5    2376.6       N/A         N/A
-  7      1394.66          3.4    2341.4       N/A         N/A
-  8      1403.09          3.7    2345.3       N/A         N/A
-  9      1391.69          3.4    2348.0       N/A         N/A
- 10      1378.33          3.4    2348.0       N/A         N/A
---------------------------------------------
-Summary Statistics:
-  Mean Latency:   1374.36 ms
-  Std Dev:        18.80 ms
-  Min:            1352.96 ms
-  Max:            1403.09 ms
-  Median:         1372.74 ms
-  Avg CPU Util:   3.5 %
-  Avg RAM:        2367.0 MB
-  Avg Power:      N/A
-  Avg Energy:     N/A
-============================================
+===========================================================================
+FULL CPU BENCHMARK REPORT
+GF(2^233) Scalar Multiplication - sect233k1
+Lopez-Dahab Projective Coordinates + Itoh-Tsujii Inversion
+===========================================================================
+Date: 2026-02-14 19:07:26
+Benchmark Runs: 50 (+ 5 warmup)
+
+---------------------------------------------------------------------------
+1. HARDWARE PLATFORM
+---------------------------------------------------------------------------
+  CPU:                       Intel(R) Core(TM) i9-14900K
+  Architecture:              AMD64 (64bit)
+  Physical Cores:            24
+  Logical Cores:             32
+  Base Frequency:            0 MHz
+  Max Boost Frequency:       3200 MHz
+  Current Frequency:         3200 MHz
+  L1 Cache:                  1024 KB
+  L2 Cache:                  N/A
+  L3 Cache:                  N/A
+  Total System RAM:          127.70 GB
+  OS:                        Windows-11-10.0.26200-SP0
+  Python:                    3.13.5 (CPython)
+
+---------------------------------------------------------------------------
+2. PROCESS RESOURCE USAGE
+---------------------------------------------------------------------------
+  Implementation:            Pure Python (arbitrary-precision integers)
+  Field Representation:      Python int (bignum, unlimited precision)
+  Algorithm:                 Lopez-Dahab double-and-add
+  Inversion:                 Itoh-Tsujii (addition chain)
+  Execution:                 Single-threaded (1 core)
+  Process RSS Memory (avg):  73.8 MB
+
+---------------------------------------------------------------------------
+3. SYSTEM MEMORY USAGE
+---------------------------------------------------------------------------
+  Total System RAM:          127.70 GB
+  Available RAM:             106.45 GB
+  Used RAM (avg during bench): 21759 MB
+  Process RSS (avg):         73.8 MB
+
+---------------------------------------------------------------------------
+4. LATENCY MEASUREMENTS
+---------------------------------------------------------------------------
+
+  Wall-clock latency (50 runs):
+    Mean:                    2518.7991 ms
+    Median:                  2518.2532 ms
+    Std Deviation:           63.3030 ms
+    Min:                     2359.8873 ms
+    Max:                     2627.6339 ms
+    5th Percentile:          2409.7199 ms
+    25th Percentile:         2480.3821 ms
+    75th Percentile:         2567.5761 ms
+    95th Percentile:         2612.8565 ms
+    99th Percentile:         2622.6580 ms
+    IQR:                     87.1940 ms
+    Total:                   125939.9534 ms
+    Throughput:              0.40 ops/sec
+
+  Per-Run Latency Detail:
+  Run   Latency (ms)  Scalar k (hex)                                                  x_aff (hex)
+  -------------------------------------------------------------------------
+  1     2359.8873     0x1d0a2d1c6433dfb200aaddca4a079486f0198372880224141c1a7035370   0x127ef395498d4d7c10626b6d728a1594cc5138c26932589b0c932373fcb
+  2     2578.2174     0x127e69fcef0b37d45d035a56b1a2a075b4144d04bee2fb4f6d006de7eef   0x18ccc5b3018fe6ef3f28e788c322259fedb808af888f290fc210cc29ffa
+  3     2516.2745     0x1b5736838904f5bf9b663e01dacd578c59ddf78968e0a5119246565d468   0x1e5efcaf083d06fe34b48b7ee55aff59247b8e98629afeef21b818c4b9d
+  4     2508.4831     0x123770cdcc3bcfeab3b94bc67fc21aa3d11c46d21edc786355c4411900b   0x0f7b631aaec731ec74a3684d7cdd5663b42f754d1a61d861139da9b1df7
+  5     2482.9188     0x1259617d1aac943a1cb1fdf6ef018c6a4d8f09619721100fb89b86a1c88   0x1d0e5b0d6cfc544d6342b18c338e3b0fe77b9c692f6f1fd20fe0bb319eb
+  6     2578.2447     0x14bdcf24a20ad3d7bce47b9c0623da47f0e55f46b7f314e570ee5b7e530   0x103c7e5fa34b8b3a12518f31feab0b42aa3eba0dab9e4c19735cf3ff2a9
+  7     2514.1049     0x14289c97c2df6cba5fbf5087fa06701196cc18f002e4aeace8892a8cd2f   0x1067e29339c6be01dd069627ef37bd639b9d92bd7b1ef6112274b2ea421
+  8     2580.4080     0x125892cb0dfd39e59ec55b4074fada53d7688ca65cbacf136c33b20956d   0x14905e1bf4f4cbd5e908882477adf9a65656b9877e23c6a0962e2f644e6
+  9     2605.1142     0x1e054eae407fa26f79e1d75085024f4e7f53f8dc5629a06ac9b3e0bb17e   0x12ec7a94b3494bb265e8690e22b5ec1c4faaa37ca4f293dd18eedc93f5a
+  10    2483.8581     0x1237abdc28602f25df898674225c7066ae0d1e9df7e0325cf4618096721   0x09aad187640cd80642106cbbdad251a756a217c6966fa209f2c26ea6c79
+  11    2407.5734     0x18430387300e24681f5f55529921e273af02d05de7416883a03c2105cbf   0x1b6c2214df9c45b983a0219c8cb32283293ad02e300ae2eb3e91ca1e7e1
+  12    2528.8547     0x1ce337a390ad71d8f380be1c43eb8646d8e8ff6b514f08f1c0259c81659   0x0240544930f4172cd95646f1e8e3434e6a3d9a7458fd4cb1a606b0673a1
+  13    2529.2408     0x1cee4f6d059c94db81c7b32e502e630d54d61b5e857eccc39c5f646c1a3   0x0745732e6fe88c4dc43f074e980cd67e5d28bcfb44ab11d4ae104fd6bb0
+  14    2617.4791     0x162ca6693ac5df3fce96fbdbd65e8efa5bbac813694fa208d80df7bf172   0x06a6579824740aa5ae1b97115a9b00c882f97a34082b3b01bda23814764
+  15    2601.1322     0x1a77598c3fedefffe32fb0401aa418eaf3b97e7953f636b16f1f9010a75   0x113d0c111c06e6cda31828eabdce88f5e996479dd918767a1013ec47356
+  16    2494.6246     0x115fb777aaa8ecd63876dec07d29080444c9bf4b1271a14ed734b4ca0d6   0x1da654291103d9ac2619a4d97643f15cbb1ba5b48b1b2fd2fd4c9f1b2a0
+  17    2460.3379     0x160eb23585da47cedcf55e7c25a7659530d84183f1b740034b88c98f381   0x06019548880a64ad0aed7410cb27739ebd9a6d723bb4a142699e2632e44
+  18    2451.5601     0x13263652afbde4f2ee4021a849ea8171278712a01c570ad356a9bf39d0c   0x0f4b998169d35e65f2d583a1f752ed134277b49ce274cf0658efea6a659
+  19    2610.7092     0x16f6c7f68f663dc57b133dff98c053203833bafb0eb3b5aedab26b70766   0x1b233354c06083a772af9e82524035a88ae7a8b8648dcab55eaba49b580
+  20    2524.2892     0x1cd3fc5254461745d301c7d9ab399619240fbb8c3f9677c0fa4ed3671c9   0x0c9cd5814453c052a485b1722f6c74ba8ff0f764606eed7fcef747dadaf
+  21    2520.2319     0x146f0e3f2e084667803c93b15d1d039517ecb5e41bd6b7e4c7031c5f6ee   0x1d18acf4d96a857da27bc444cd6360b50e092932e6e171998342c00f5be
+  22    2558.3786     0x1c3bdef5b8b70adf615e11899d36addc3b843254e0fc2b1daa77d80b433   0x1bd0e5f91d1302be102aba98773b6cd0cafa93caf7036ba0fd9cecc7ac4
+  23    2589.2190     0x15a2f94f226f1eadc959ae5fe82e32b1e506d49a8ba5ffdd0daa780dade   0x10b88fa236a34400158d7356718dd6e1b11faeeb8aed709f6e7093bc698
+  24    2479.9900     0x101d370b2f3064cd122207df9e422ec1f440ea6cc76a21d2fc3f5bee843   0x05fa9e5f851f5259b7763e3be1bb0a975c49e41639a0fb66baa89751e45
+  25    2403.9006     0x181d473ac6ae3590b0dbd423d63424296412a2572186984e3bea818069d   0x0d91b3155debdf1007fa92196bceec73b1cff9fadb3f004eb9e39852fb6
+  26    2444.4683     0x1128d318e6115c382ec5de7340aca489003d834e60ef8adafb51ddac365   0x00b13824c352bdbb307aa165122f1cdec122643462c45f4e37205a4a83e
+  27    2559.8676     0x1bb8aba102d0cfffa64bcbd5bddfc3e88ee1c81df3a672ab4851506a9a5   0x171075b1d6c526eaa7dcb8c3763ef6232901cfe022c325c0406002e5f78
+  28    2614.6133     0x174bcf0f487ad22457cd3e8dfdd2656ff182e269e57a77d43126716b77a   0x0671fe716e9d31e3acb6098863ccd3fe9013cc7fd15285bc36a9d90bd57
+  29    2502.3898     0x198670081e90c55c1a011b784f4d35a2ddbd0439f5b50abc67a341a783e   0x17f7a023b7b48ed390b3755f6f9867e2ae06bce880815cea995d3106a61
+  30    2568.4947     0x1a9ba90b23a1efa5c944f3578fc23669772235545f1a7bf8513b599b031   0x05690c098e3c33994bba85ba5421f8e38c6fcc4ef74ff7a51a3a0813a42
+  31    2535.3347     0x13465f9088c9a16d816225f5283df3c8c73ee3a5fef446209769c6db316   0x136306f0e9da67de77af42b2ef3308208a8d61eb0b56a882adcee0c9cb4
+  32    2478.5923     0x14f9a65bec5d243d0a12f324682e3678064fa1308a16a50507aa733a555   0x0272f0b0b510b324f8ae2a0352076d4699a4d290108e6b89e18584b5a20
+  33    2557.7422     0x173b6882cd1a115c8c67a1bcddd412f515e14a4917fb26b3cd872b95f86   0x164b2a9671aaffd08a7649a4fe7856002076f4ebf42c8e44675a92165bb
+  34    2549.6821     0x158efabfd375f82a12483e30ae8c5a71fa2c0e066f12470eb8df2fab901   0x1cbf192c0982d332753fbc928e61288b0183ce9f809a107beea048ad126
+  35    2564.8201     0x1771e20f62b42cee3b0aff4a96518ef0322382d8eed8e1a9d51ac53a9ee   0x144bb4a0db067c8dff66f58a22dd5485ee5839edec2262bd5adca07b7ed
+  36    2464.2577     0x1bf600d4e46783911e8b3f61a238910ad4283baf357e11455c80a1b7a78   0x00b4802ef56e50247fc0bf2135d2b80580b352cca6b2c0dca5836ae22ab
+  37    2530.4209     0x1e74398fa33ac95baedccb011ce5926fa629abf9c500c9e224bf8267698   0x1cc70bf6c5ae0167905887f67f7f7258983785e5c46df142f43b37555fa
+  38    2481.5583     0x1be8ae193ce2c1152ed0eb5f0e0bde59b001c9424d925c21edcb926caed   0x0b61f133a749a3bdac771c7c4944fa8f6b1b1bdc2e825f4c86102e1d21b
+  39    2562.2201     0x1814f652ba91f06d605844698b592c5b6e7b8ce6bcae9c2f5779b9d87f2   0x0232e3cb908ed50514dc40889de54e2c103212abe4c5e0bcf66d848e742
+  40    2431.4013     0x1459a4897ff235e2253838801ee2d50c475418e76aba76a962ae9002c84   0x1d7233d5235a4330ecfc0ff971e661feb074fe2b811dd1385ea220be1c4
+  41    2498.6137     0x14d91b682326b5abc80ef6fa3328a113f0cc1d5677033736933a84b6b81   0x0ab9061cf316c896f242426ed974aec8997c2ed487fb20b5b9c3bed17a7
+  42    2497.3848     0x14eaee9ab01a13cbac483f4620797a251de78d52dab19e328b1e7c6e83c   0x1761e7f5af73e96c382a952adc585196b07f576c1d8450f655729aae884
+  43    2425.4399     0x12b4cb524cf458d0556f66c6f056fe83198a016218182ca7dc46984ed8c   0x07b0a424a5469bd0c59ce5ba54c4c0e42ffda19565f21c92640f6131ede
+  44    2460.6025     0x149c72995308f7c1a070884443f845d46b3f084d4b56fdcba349ac2bd91   0x0bdfdf1695b7043eef56666437b3f728510dafe749c12db45786b5a14dd
+  45    2627.6339     0x1305fd7ad40e1fca738aed2b4bdf4596cf9f9430dccbf7fa48a78fe993e   0x02cbba19fbf1012a9b01f747676bcdf8cec6f68dc2da0bf829228bd2a2b
+  46    2412.3434     0x1dc81b6e6f034190adcc1424c8f004f3433b85287ff16a42e0a8284d69c   0x017e52c1a5336158be42d2e7847053055ee4e48417f58170c9c5db5b065
+  47    2497.8750     0x15ac919ea73c5ba5da12027e2911293d042352fcb25ac7fb89ab8da1764   0x1d1b2c1266e05eb9691bc9f28f7f9527e1bd78bc5d3863c2de8f78999d6
+  48    2594.6311     0x1aae3706d1f47f6fdbd39c971a2c69724255ba4f0652cd8777db162c2b7   0x09b5b0e7d2abc7848844053065aa1b3694449cd026425f31b3d4757ded3
+  49    2587.5008     0x19e6f36377e6e30771541b72c0e8bdb865e6da513a7dcdedf25fd08492e   0x1d75aa6dab947bfa59a65a5a27a59b9098d3c0a29a2299e303c71693579
+  50    2507.0326     0x1526930eb3fa5eb74d640001ae8df10776b92bcb6c97156006b295bfde6   0x0d20149e76f5d1ed402c5e0911daa54567bd1019794ef239aa6a17d534c
+
+---------------------------------------------------------------------------
+5. POWER CONSUMPTION
+---------------------------------------------------------------------------
+  Idle CPU Power:            N/A
+
+  Under Load:                N/A
+  Note: CPU power measurement requires RAPL (Linux) or
+        LibreHardwareMonitor/OpenHardwareMonitor (Windows).
+        i9-14900K TDP: 125 W (PBP) / 253 W (MTP)
+
+---------------------------------------------------------------------------
+6. THERMAL MONITORING
+---------------------------------------------------------------------------
+  CPU Temperature:           N/A
+  Note: Temperature reading requires admin privileges on Windows
+        (MSAcpi_ThermalZoneTemperature) or psutil sensor support.
+
+---------------------------------------------------------------------------
+7. CPU UTILIZATION
+---------------------------------------------------------------------------
+  Overall CPU Utilization (50 samples):
+    Mean:                    9.7%
+    Min:                     8.6%
+    Max:                     11.7%
+
+  Per-Core Average Utilization (32 logical cores):
+    Core 10:                  49.5%
+    Core  8:                  40.7%
+    Core 28:                  28.7%
+    Core 24:                  22.0%
+    Core  9:                  19.5%
+    Core 11:                  14.5%
+    Core 25:                  11.3%
+    Core 20:                  10.2%
+    (remaining 24 cores avg: 4.7%)
+
+  System RAM Used (avg):     21759 MB
+
+===========================================================================
+SUMMARY
+===========================================================================
+  Curve:                     sect233k1 (GF(2^233))
+  Algorithm:                 Lopez-Dahab double-and-add
+  Inversion:                 Itoh-Tsujii (addition chain)
+  Field Representation:      Python int (arbitrary precision)
+  CPU:                       Intel(R) Core(TM) i9-14900K
+  Avg Latency (Wall):        2518.7991 ms
+  Throughput:                0.40 ops/sec
+===========================================================================
