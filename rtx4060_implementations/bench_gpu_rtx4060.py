@@ -85,17 +85,18 @@ CURVES = {
 # Helper: nvidia-smi GPU stats (single query for efficiency)
 # ============================================================
 def get_gpu_stats():
-    """Query nvidia-smi for GPU stats. Returns dict with float values or None on failure."""
+    """Query nvidia-smi for GPU stats. Returns dict with float values or None on failure.
+    Uses --query-gpu for util/mem/temp/clock and -q -d POWER for power (Power Samples)."""
     stats = {}
     try:
         result = subprocess.run(
             ['nvidia-smi',
-             '--query-gpu=utilization.gpu,memory.used,temperature.gpu,power.draw,clocks.current.sm',
+             '--query-gpu=utilization.gpu,memory.used,temperature.gpu,clocks.current.sm',
              '--format=csv,noheader,nounits'],
             capture_output=True, text=True, timeout=5
         )
         parts = [p.strip() for p in result.stdout.strip().split(',')]
-        keys = ['gpu_util', 'mem_used', 'temperature', 'power_draw', 'clock_sm']
+        keys = ['gpu_util', 'mem_used', 'temperature', 'clock_sm']
         for i, key in enumerate(keys):
             try:
                 val = parts[i] if i < len(parts) else '[N/A]'
@@ -103,22 +104,40 @@ def get_gpu_stats():
             except (ValueError, IndexError):
                 stats[key] = None
     except Exception:
-        for key in ['gpu_util', 'mem_used', 'temperature', 'power_draw', 'clock_sm']:
+        for key in ['gpu_util', 'mem_used', 'temperature', 'clock_sm']:
             stats[key] = None
+
+    # Get power from Power Samples (works when instantaneous power.draw is N/A)
+    stats['power_draw'] = _get_power_from_samples()
     return stats
 
 
-def get_idle_power():
-    """Get GPU power draw at idle (via nvidia-smi). Returns W or None."""
+def _get_power_from_samples():
+    """Extract average power from nvidia-smi Power Samples section. Returns W or None."""
     try:
         result = subprocess.run(
-            ['nvidia-smi', '--query-gpu=power.draw', '--format=csv,noheader,nounits'],
+            ['nvidia-smi', '-q', '-d', 'POWER'],
             capture_output=True, text=True, timeout=5
         )
-        val = result.stdout.strip()
-        return float(val) if val != '[N/A]' else None
+        in_samples = False
+        for line in result.stdout.splitlines():
+            stripped = line.strip()
+            if stripped.startswith('Power Samples'):
+                in_samples = True
+            elif in_samples and stripped.startswith('Avg'):
+                # "Avg                               : 53.01 W"
+                val_str = stripped.split(':')[1].strip().replace('W', '').strip()
+                return float(val_str)
+            elif in_samples and stripped == '':
+                continue
+        return None
     except Exception:
         return None
+
+
+def get_idle_power():
+    """Get GPU power draw at idle via nvidia-smi Power Samples. Returns W or None."""
+    return _get_power_from_samples()
 
 
 # ============================================================
@@ -126,12 +145,16 @@ def get_idle_power():
 # ============================================================
 def extract_kernel_code(filepath):
     """Extract the CUDA kernel_code raw string from a GPU script file."""
-    with open(filepath, 'r') as f:
+    with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
         content = f.read()
     marker = "kernel_code = r'''"
     start_idx = content.index(marker) + len(marker)
     end_idx = content.index("'''", start_idx)
-    return content[start_idx:end_idx]
+    code = content[start_idx:end_idx]
+    # Strip non-ASCII chars in comments (e.g. arrows, math symbols) so NVRTC
+    # can write the source to a temp file on Windows (cp1252 encoding).
+    code = code.encode('ascii', errors='ignore').decode('ascii')
+    return code
 
 
 # ============================================================
@@ -235,8 +258,13 @@ def setup_curve(cfg):
     script_path = os.path.join(SCRIPT_DIR, cfg['script'])
     kernel_code = extract_kernel_code(script_path)
 
-    cuda_root = "/usr/local/cuda-12.6"
-    include_paths = [f"{cuda_root}/include", f"{cuda_root}/include/crt"]
+    # Auto-detect CUDA include paths for Windows or Linux
+    if sys.platform == 'win32':
+        cuda_root = os.environ.get('CUDA_PATH', r'C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.9')
+        include_paths = [os.path.join(cuda_root, 'include'), os.path.join(cuda_root, 'include', 'crt')]
+    else:
+        cuda_root = "/usr/local/cuda-12.6"
+        include_paths = [f"{cuda_root}/include", f"{cuda_root}/include/crt"]
     options = ('--std=c++11',) + tuple(f'-I{p}' for p in include_paths)
 
     mod = cp.RawModule(code=kernel_code, options=options)
@@ -336,7 +364,7 @@ def benchmark_curve(curve_key, cfg):
     if idle_power is not None:
         print(f"  Idle GPU Power:        {idle_power:.1f} W")
     else:
-        print(f"  Idle GPU Power:        N/A (not available on WSL2)")
+        print(f"  Idle GPU Power:        N/A")
 
     # Warm-up runs (not timed)
     print(f"  Warm-up ({WARMUP_RUNS} runs)...")
@@ -531,7 +559,7 @@ def write_stats_file(filename, cfg, results, kernel_attrs, idle_power, dev_props
     if idle_power is not None:
         lines.append(f"  Idle GPU Power:            {idle_power*1000:.0f} mW")
     else:
-        lines.append(f"  Idle GPU Power:            N/A (WSL2 does not expose power.draw)")
+        lines.append(f"  Idle GPU Power:            N/A")
 
     if powers:
         pw_arr = np.array(powers)
@@ -543,8 +571,8 @@ def write_stats_file(filename, cfg, results, kernel_attrs, idle_power, dev_props
         lines.append(f"    Std Dev:                 {np.std(pw_arr)*1000:.0f} mW")
     else:
         lines.append(f"")
-        lines.append(f"  Under Load:                N/A (WSL2 does not expose power.draw)")
-        lines.append(f"  Note: nvidia-smi power.draw is not supported under WSL2.")
+        lines.append(f"  Under Load:                N/A")
+        lines.append(f"  Note: nvidia-smi power.draw is not available.")
         lines.append(f"        GPU power limit is 115 W (TDP).")
 
     if energies:
@@ -717,7 +745,7 @@ def write_summary_file(all_results, all_kernel_attrs, all_idle_powers, dev_props
             avg_energy_str = f"{np.mean(ens):.2f}" if ens else "N/A"
             lines.append(f"  {cfg['label']:<19}{idle_str:<12}{avg_pow_str:<17}{avg_energy_str}")
     else:
-        lines.append(f"  Power data not available (WSL2 does not expose nvidia-smi power.draw)")
+        lines.append(f"  Power data not available")
         lines.append(f"  GPU TDP (power limit): 115 W")
 
     # --- Thermal Monitoring ---
@@ -807,7 +835,7 @@ def write_summary_file(all_results, all_kernel_attrs, all_idle_powers, dev_props
         lines.append(f"  - GPU power remains stable across all curves "
                      f"(~{min(all_powers):.0f}-{max(all_powers):.0f} W)")
     elif not all_powers:
-        lines.append(f"  - Power data not available on WSL2 (GPU TDP: 115 W)")
+        lines.append(f"  - Power data not available (GPU TDP: 115 W)")
 
     # Temperature
     all_temps = []

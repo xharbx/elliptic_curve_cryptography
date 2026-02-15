@@ -2,7 +2,7 @@
 NVIDIA RTX 4060 - GPU BENCHMARK SUMMARY
 ECC Scalar Multiplication over Binary Fields
 ===========================================================================
-Date: 2026-02-13
+Date: 2026-02-14
 Platform: NVIDIA GeForce RTX 4060 (Compute 8.9, 24 SMs, 2490 MHz)
 Algorithm: Lopez-Dahab double-and-add (Projective Coordinates)
 Inversion: Itoh-Tsujii (addition chain)
@@ -14,17 +14,17 @@ Benchmark Runs: 50 (+ 5 warmup) per curve
 LATENCY & THROUGHPUT
 ---------------------------------------------------------------------------
   Curve              Field Repr.       Avg CUDA (ms)   Avg Wall (ms)   Throughput
-  sect163k1          3 x 64-bit          84.1207         76.0073         11.89 ops/sec
-  sect233k1          4 x 64-bit          205.8255        189.1804        4.86 ops/sec
-  sect571k1          9 x 64-bit          893.6819        813.0661        1.12 ops/sec
+  sect163k1          3 x 64-bit          84.0916         85.3204         11.89 ops/sec
+  sect233k1          4 x 64-bit          207.1523        208.3687        4.83 ops/sec
+  sect571k1          9 x 64-bit          898.5176        899.2103        1.11 ops/sec
 
 ---------------------------------------------------------------------------
 KERNEL RESOURCE USAGE
 ---------------------------------------------------------------------------
   Curve              Registers/Thread  Local Mem/Thread  Max Threads/Block
-  sect163k1          255               2176 bytes          256
-  sect233k1          255               4608 bytes          256
-  sect571k1          255               3856 bytes          256
+  sect163k1          255               2368 bytes          256
+  sect233k1          255               4144 bytes          256
+  sect571k1          255               3424 bytes          256
 
   Grid Size:         (1, 1, 1) for all curves
   Block Size:        (1, 1, 1) for all curves
@@ -33,39 +33,42 @@ KERNEL RESOURCE USAGE
 ---------------------------------------------------------------------------
 POWER CONSUMPTION
 ---------------------------------------------------------------------------
-  Power data not available (WSL2 does not expose nvidia-smi power.draw)
-  GPU TDP (power limit): 115 W
+  Curve              Idle (W)    Avg Load (W)     Energy/Op (mJ)
+  sect163k1          53.1        58.3             4899.12
+  sect233k1          53.2        59.0             12219.75
+  sect571k1          55.2        59.9             53842.52
 
 ---------------------------------------------------------------------------
 THERMAL MONITORING
 ---------------------------------------------------------------------------
   Curve              Avg GPU Temp (C)    Min GPU Temp (C)    Max GPU Temp (C)
-  sect163k1          48.0                48                  48
-  sect233k1          49.4                49                  50
-  sect571k1          53.1                51                  55
+  sect163k1          47.1                46                  48
+  sect233k1          48.8                48                  50
+  sect571k1          53.4                51                  56
 
 ---------------------------------------------------------------------------
 GPU UTILIZATION
 ---------------------------------------------------------------------------
   Curve              Avg GPU Load (%)    Max GPU Load (%)    Avg CPU Load (%)
-  sect163k1          74.3                89                  3.5
-  sect233k1          87.7                100                 3.9
-  sect571k1          99.0                100                 4.1
+  sect163k1          36.4                100                 8.2
+  sect233k1          33.9                100                 8.5
+  sect571k1          87.0                100                 8.3
 
 ---------------------------------------------------------------------------
 LATENCY STATISTICS (CUDA event, ms)
 ---------------------------------------------------------------------------
   Curve       Mean      Median    StdDev    Min       Max       P5        P95
-  sect163k1   84.12     83.66     4.97      74.64     95.82     77.29     93.36
-  sect233k1   205.83    206.23    6.06      193.88    217.88    196.40    215.27
-  sect571k1   893.68    894.92    17.36     859.34    933.72    863.79    920.40
+  sect163k1   84.09     84.92     4.81      74.87     92.51     76.38     91.78
+  sect233k1   207.15    206.49    5.47      198.25    218.98    198.96    217.19
+  sect571k1   898.52    896.28    16.00     849.45    938.97    877.75    924.84
 
 ===========================================================================
 KEY OBSERVATIONS
 ===========================================================================
-  - GF(2^571) is ~10.6x slower than GF(2^163) and ~4.3x slower than GF(2^233)
-  - Power data not available on WSL2 (GPU TDP: 115 W)
-  - GPU temperature stays within safe range (48-53 C) for all field sizes
-  - GPU utilization across field sizes: 74.3% -> 87.7% -> 99.0%
+  - GF(2^571) is ~10.7x slower than GF(2^163) and ~4.3x slower than GF(2^233)
+  - Energy per operation scales with latency: 571-bit uses ~11.0x more energy than 163-bit
+  - GPU power remains stable across all curves (~58-60 W)
+  - GPU temperature stays within safe range (47-53 C) for all field sizes
+  - GPU utilization across field sizes: 36.4% -> 33.9% -> 87.0%
   - All kernels hit the 255 register cap, causing register spilling to local memory
 ===========================================================================
